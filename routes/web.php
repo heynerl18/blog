@@ -1,0 +1,16 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+Route::middleware(['auth', 'verified'])->group(function () {
+  Route::view('/', 'pages._index')->name('dashboard');
+  Route::view('/categories', 'pages._categories')->name('categories');
+  Route::view('/tags', 'pages._tags')->name('tags');
+  Route::view('/posts', 'pages._posts')->name('posts.index');
+  Route::view('/posts/create', 'pages.forms.posts.create')->name('posts.create');
+  Route::view('/posts/{postId}/edit', 'pages.forms.posts.edit')->name('posts.edit');
+  Route::view('/users', 'pages._users')->middleware('can:users.index')->name('users');
+  Route::view('/roles', 'pages._roles')->name('roles');
+});
+
+require __DIR__ . '/auth.php';

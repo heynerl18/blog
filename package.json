@@ -1,0 +1,41 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite"
+    },
+    "devDependencies": {
+        "@tailwindcss/forms": "^0.5.2",
+        "autoprefixer": "^10.4.20",
+        "axios": "^1.7.4",
+        "concurrently": "^9.0.1",
+        "flowbite": "^2.5.2",
+        "laravel-vite-plugin": "^1.0",
+        "postcss": "^8.4.49",
+        "tailwindcss": "^3.4.16",
+        "vite": "^6.0"
+    },
+    "dependencies": {
+        "@tiptap/core": "^2.11.2",
+        "@tiptap/extension-bold": "^2.11.2",
+        "@tiptap/extension-color": "^2.11.2",
+        "@tiptap/extension-font-family": "^2.11.2",
+        "@tiptap/extension-highlight": "^2.11.2",
+        "@tiptap/extension-image": "^2.11.2",
+        "@tiptap/extension-link": "^2.11.2",
+        "@tiptap/extension-text-align": "^2.11.2",
+        "@tiptap/extension-text-style": "^2.11.2",
+        "@tiptap/extension-underline": "^2.11.2",
+        "@tiptap/extension-youtube": "^2.11.2",
+        "@tiptap/pm": "^2.11.0",
+        "@tiptap/starter-kit": "^2.11.2",
+        "alpinejs": "^3.14.7",
+        "apexcharts": "^4.2.0",
+        "flowbite-typography": "^1.0.5",
+        "sweetalert2": "^11.15.10"
+    },
+    "overrides": {
+        "prosemirror-model": "1.19.3"
+    }
+}
