@@ -1,7 +1,8 @@
 # Tala Blog
 
 ## Descripción
-Este proyecto es una plataforma de blog construida con Laravel. Permite a los usuarios crear, editar y eliminar entradas de blog. Además, incluye un sistema de autenticación para gestionar usuarios y roles.
+Este proyecto es una plataforma de blog construida con **Laravel**, **Livewire** para interfaces dinámicas, **Alpine.js** para interacciones ligeras en el frontend, y **Flowbite** para componentes de UI basados en **Tailwind CSS**. Permite a los usuarios crear, editar y eliminar entradas de blog, además de contar con un sistema de autenticación para gestionar usuarios y roles.
+
 
 ## Características
 
