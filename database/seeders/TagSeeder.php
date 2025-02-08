@@ -23,6 +23,15 @@ class TagSeeder extends Seeder
         $createdTags++;
       }
     }
+    /* $tags = [
+      'Laravel', 'PHP', 'Backend', 'Frontend', 'Vue.js',
+      'JavaScript', 'CSS', 'HTML', 'APIs', 'MySQL',
+      'PostgreSQL', 'Security', 'DevOps', 'Testing', 'Git'
+    ];
+
+    foreach ($tags as $tag) {
+      Tag::firstOrCreate(['name' => $tag]);
+    } */
   }
 
   private function generateUniqueWord(int $minLength): string

@@ -11,10 +11,10 @@
           </svg>
         </button>
         <a href="/" class="flex ml-2 md:mr-24">
-          <img src="{{ asset('images/icons/logo.svg') }}" id="logo" class="h-8 mr-3" alt="FlowBite Logo" />
-          <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">TalaBlog</span>
+          <img src="{{ asset('images/logo.png') }}" id="logo" class="h-10 mr-3" alt="FlowBite Logo" />
+          {{-- <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">TalaBlog</span> --}}
         </a>
-        <form action="#" method="GET" class="hidden lg:block lg:pl-3.5">
+        {{-- <form action="#" method="GET" class="hidden lg:block lg:pl-3.5">
           <label for="topbar-search" class="sr-only">Buscar</label>
           <div class="relative mt-1 lg:w-96">
             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -24,7 +24,7 @@
             </div>
             <input type="text" name="email" id="topbar-search" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Buscar">
           </div>
-        </form>
+        </form> --}}
       </div>
       <div class="flex items-center">
         {{-- <div class="hidden mr-3 -mb-1 sm:block">
