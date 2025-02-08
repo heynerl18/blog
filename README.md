@@ -1,4 +1,4 @@
-# Blog
+# Tala Blog
 
 ## Descripción
 Este proyecto es una plataforma de blog construida con Laravel. Permite a los usuarios crear, editar y eliminar entradas de blog. Además, incluye un sistema de autenticación para gestionar usuarios y roles.
