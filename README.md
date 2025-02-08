@@ -16,16 +16,16 @@ Este proyecto es una plataforma de blog construida con Laravel. Permite a los us
 ## Capturas de pantalla
 
 ### Pantalla de Login
-![Pantalla de Login](/images/screenshots/Login.png)
+![Pantalla de Login](public/images/screenshots/Login.png)
 ### Pantalla principal de Categorías
-![Pantalla principal de Categorías](/images/screenshots/Categories.png)
+![Pantalla principal de Categorías](public/images/screenshots/Categories.png)
 ### Pantalla principal de Etiquetas
-![Pantalla principal de Etiquetas](/images/screenshots/Tags.png)
+![Pantalla principal de Etiquetas](public/images/screenshots/Tags.png)
 ### Pantalla principal de Notas
-![Pantalla principal de Notas](/images/screenshots/Post.png)
+![Pantalla principal de Notas](public/images/screenshots/Post.png)
 ### Pantalla de creación de Notas
-![Pantalla de creación de Notas](/images/screenshots/FormPost.png)
+![Pantalla de creación de Notas](public/images/screenshots/FormPost.png)
 ### Pantalla principal de Usuarios
-![Pantalla principal de Usuarios](/images/screenshots/Users.png)
+![Pantalla principal de Usuarios](public/images/screenshots/Users.png)
 ### Pantalla principal de Roles
-![Pantalla principal de Roles](/images/screenshots/Roles.png)
+![Pantalla principal de Roles](public/images/screenshots/Roles.png)
