@@ -21,9 +21,9 @@ new #[Layout('layouts.guest')] class extends Component
     Session::regenerate();
 
     //$this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
-    // Redirige sin usar Livewire navigate
     $this->redirect(route('dashboard', absolute: false));
   }
+
 }; ?>
 
 <section class="bg-gray-50 dark:bg-gray-900">
@@ -44,14 +44,14 @@ new #[Layout('layouts.guest')] class extends Component
           <!-- Email Address -->
           <div>
             <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Correo electrónico</label>
-            <input wire:model="form.email" type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Ingresa su correo" required autofocus autocomplete="username">
+            <input wire:model="form.email" type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Ingresa su correo" autofocus autocomplete="username">
             <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
           </div>
 
           <!-- Password -->
           <div>
             <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contraseña</label>
-            <input wire:model="form.password" type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required autocomplete="current-password">
+            <input wire:model="form.password" type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" autocomplete="current-password">
             <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
           </div>
 
