@@ -11,7 +11,7 @@
           </svg>
         </button>
         <a href="/" class="flex ml-2 md:mr-24">
-          <img src="{{ asset('images/logo.png') }}" id="logo" class="h-10 mr-3" alt="FlowBite Logo" />
+          <img src="{{ asset('images/logo.png') }}" id="logo" class="h-10 mr-3" alt="Logo" />
           {{-- <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">TalaBlog</span> --}}
         </a>
         {{-- <form action="#" method="GET" class="hidden lg:block lg:pl-3.5">
@@ -52,7 +52,11 @@
           <div>
             <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button-2" aria-expanded="false" data-dropdown-toggle="dropdown-2">
               <span class="sr-only">Open user menu</span>
-              <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+              @if(Auth::user()->google_id)
+                <img class="w-8 h-8 rounded-full" src="{{ Auth::user()->avatar }}" alt="user photo">
+              @else
+                <img class="w-8 h-8 rounded-full" src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim(Auth::user()->email))) }}?d=mp&s=64" alt="user photo">
+              @endif
             </button>
           </div>
           <!-- Dropdown menu -->

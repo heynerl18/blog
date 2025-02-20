@@ -1,6 +1,12 @@
 <?php
 
+use App\Http\Controllers\AuthSocialController;
 use Illuminate\Support\Facades\Route;
+
+Route::prefix('auth')->group(function () {
+  Route::get('/redirect', [AuthSocialController::class,'redirectToGoogle'])->name('auth.redirect');
+  Route::get('/callback', [AuthSocialController::class, 'handleGoogleCallback'])->name('auth.callback');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
   Route::view('/', 'pages._index')->name('dashboard');

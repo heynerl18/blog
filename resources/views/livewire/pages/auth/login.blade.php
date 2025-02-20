@@ -39,6 +39,11 @@ new #[Layout('layouts.guest')] class extends Component
 
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />
+        @if (session('error'))
+          <div class="mb-4 text-sm text-red-600">
+            {{ session('error') }}
+          </div>
+        @endif
 
         <form wire:submit="login" class="space-y-4 md:space-y-6">
           <!-- Email Address -->
@@ -85,11 +90,11 @@ new #[Layout('layouts.guest')] class extends Component
 
         <!-- Social Login Buttons -->
         <div class="flex justify-center gap-4">
-          <button type="button" class="flex items-center justify-center w-full px-4 py-2 border-[0.5px] border-gray-300 dark:border-gray-600        rounded-md shadow-sm text-sm    font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          <a href="{{ route('auth.redirect') }}" class="flex items-center justify-center w-full px-4 py-2 border-[0.5px] border-gray-300 dark:border-gray-600        rounded-md shadow-sm text-sm    font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
             <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" class="w-5 h-5 mr-2">
             Google
-          </button>
+        </a>
         </div>
 
         <!-- Register Link -->
