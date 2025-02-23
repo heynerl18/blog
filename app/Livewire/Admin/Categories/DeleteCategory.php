@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Categories;
+namespace App\Livewire\Admin\Categories;
 
 use App\Models\Category;
 use Livewire\Component;
@@ -51,6 +51,6 @@ class DeleteCategory extends Component
 
 	public function render()
 	{
-		return view('livewire.categories.delete-category');
+		return view('livewire.admin.categories.delete-category');
 	}
 }

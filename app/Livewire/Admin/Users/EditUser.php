@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Users;
+namespace App\Livewire\Admin\Users;
 
 use App\Models\User;
 use Livewire\Component;
@@ -70,6 +70,6 @@ class EditUser extends Component
   public function render()
   {
     $roles = Role::all();
-    return view('livewire.users.edit-user', ['roles' => $roles]);
+    return view('livewire.admin.users.edit-user', ['roles' => $roles]);
   }
 }

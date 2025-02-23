@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Categories;
+namespace App\Livewire\Admin\Categories;
 
 use App\Models\Category;
 use Livewire\Component;
@@ -73,6 +73,6 @@ class AddEditCategory extends Component
 
   public function render()
   {
-    return view('livewire.categories.add-edit-category');
+    return view('livewire.admin.categories.add-edit-category');
   }
 }

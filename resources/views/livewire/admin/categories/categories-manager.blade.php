@@ -99,8 +99,8 @@
   {{-- Pagination --}}
   <livewire:pagination :totalItems="$categories->total()" :itemsPerPage="$categories->perPage()" :currentPage="$categories->currentPage()" />
   {{-- Open Modal --}}
-  @livewire('categories.add-edit-category')
-  @livewire('categories.delete-category')
+  @livewire('admin.categories.add-edit-category')
+  @livewire('admin.categories.delete-category')
 </div>
 
 @script

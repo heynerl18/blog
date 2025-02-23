@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Livewire\Tags;
+namespace App\Livewire\Admin\Categories;
 
-use App\Models\Tag;
+use App\Models\Category;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On; 
 
-class TagsManager extends Component
+class CategoriesManager extends Component
 {
   use WithPagination;
 
@@ -22,10 +22,10 @@ class TagsManager extends Component
 
   public function mount()
   {
-    //$this->perPage = 10;
+    // $this->perPage = 10;
   }
 
-  #[On('refreshTags')]
+  #[On('refreshCategories')]
   public function reloadTags()
   {
     $this->resetPage();
@@ -33,12 +33,9 @@ class TagsManager extends Component
 
   public function render()
   {
-    $tags = Tag::where('name', 'like', "%{$this->search}%")
-      ->paginate($this->perPage);
-
-    return view('livewire.tags.tags-manager', [
-      'tags' => $tags,
-    ]);
+    $categories = Category::where('name', 'like', "%{$this->search}%")
+    ->paginate($this->perPage);
+    return view('livewire.admin.categories.categories-manager', ['categories' => $categories]);
   }
 
   public function updatingSearch()

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Tags;
+namespace App\Livewire\Admin\Tags;
 
 use App\Models\Tag;
 use Livewire\Component;
@@ -76,6 +76,6 @@ class AddEditTag extends Component
 
   public function render()
   {
-    return view('livewire.tags.add-edit-tag');
+    return view('livewire.admin.tags.add-edit-tag');
   }
 }

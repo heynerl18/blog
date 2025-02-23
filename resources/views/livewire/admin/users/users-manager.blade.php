@@ -93,7 +93,7 @@
   </div>
   {{-- Pagination --}}
   <livewire:pagination :totalItems="$users->total()" :itemsPerPage="$users->perPage()" :currentPage="$users->currentPage()" />
-  @livewire('users.edit-user')
+  @livewire('admin.users.edit-user')
 </div>
 
 @script

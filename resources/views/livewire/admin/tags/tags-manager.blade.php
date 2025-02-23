@@ -113,8 +113,8 @@
     :currentPage="$tags->currentPage()"
   />
   {{-- Open Modal --}}
-  @livewire('tags.add-edit-tag')
-  @livewire('tags.delete-tag')
+  @livewire('admin.tags.add-edit-tag')
+  @livewire('admin.tags.delete-tag')
 
 </div>
 

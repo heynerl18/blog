@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Users;
+namespace App\Livewire\Admin\Users;
 
 use App\Models\User;
 use Livewire\Component;
@@ -35,7 +35,7 @@ class UsersManager extends Component
   {
     $users = User::where('name', 'like', "%{$this->search}%")
       ->paginate($this->perPage);
-    return view('livewire.users.users-manager', ['users' => $users]);
+    return view('livewire.admin.users.users-manager', ['users' => $users]);
   }
 
   public function updatingSearch()

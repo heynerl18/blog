@@ -1,7 +1,7 @@
 <x-app-layout>
 
   <div class="p-4">
-    @livewire('categories.categories-manager')
+    @livewire('admin.categories.categories-manager')
 </div>
 
 </x-app-layout>  
