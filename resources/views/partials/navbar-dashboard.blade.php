@@ -55,7 +55,9 @@
               @if(Auth::user()->google_id)
                 <img class="w-8 h-8 rounded-full" src="{{ Auth::user()->avatar }}" alt="user photo">
               @else
-                <img class="w-8 h-8 rounded-full" src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim(Auth::user()->email))) }}?d=mp&s=64" alt="user photo">
+                <div class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                  <svg class="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                </div>
               @endif
             </button>
           </div>
