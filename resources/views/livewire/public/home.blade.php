@@ -21,18 +21,10 @@
               <div class="text-sm text-gray-300">
                 📅 {{ $post->created_at->format('d M, Y') }}
                 @if($post->category)
-                  | 🏷️ <a href="#" class="text-blue-400 hover:underline">{{ $post->category->name }}</a>
+                  | 🏷️ <a href="{{ route('categories.index', $post->category->slug) }}" class="text-blue-400 hover:underline">{{ $post->category->name }}</a>
                 @endif
               </div>
               <p class="text-sm text-gray-300 mt-2">{{ Str::limit($post->excerpt, 100) }}</p>
-              <a href="#"
-                 class="mt-2 inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-300">
-                Leer más
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 14 10">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                </svg>
-              </a>
             </div>
           </div>
 
@@ -48,19 +40,10 @@
               <div class="text-sm text-gray-300">
                 📅 {{ $post->created_at->format('d M, Y') }}
                 @if($post->category)
-                  | 🏷️ <a href="#" class="text-blue-400 hover:underline pointer-events-auto">{{ $post->category->name }}</a>
+                  | 🏷️ <a href="{{ route('categories.index', $post->category->slug) }}" class="text-blue-400 hover:underline pointer-events-auto">{{ $post->category->name }}</a>
                 @endif
               </div>
               <p class="text-sm text-gray-300 mt-2 pointer-events-auto">{{ Str::limit($post->excerpt, 100) }}</p>
-              <a href="#"
-                class="w-auto self-start mt-2 inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-300 pointer-events-auto">
-                Leer más
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 14 10">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                </svg>
-              </a>
-
             </div>
           </div>
         @endif

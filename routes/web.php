@@ -1,15 +1,15 @@
-<?php
+ <?php
 
 use App\Http\Controllers\AuthSocialController;
 use App\Livewire\Public\Home;
+use App\Livewire\Public\PublicCategoryPosts;
 use Illuminate\Support\Facades\Route;
 
 // ==================================================
 // Public Routes
 // ==================================================
 Route::get('/', Home::class)->name('home');
-
-
+Route::get('/categories/{category:slug}', PublicCategoryPosts::class)->name('categories.index');
 // ==================================================
 // Social Authentication Routes
 // ==================================================

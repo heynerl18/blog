@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Public;
 
+use App\Models\Category;
 use App\Models\Post;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -15,7 +16,7 @@ class Home extends Component
       ->latest()
 /*       ->take(4) */
       ->get();
-      
+
     return view('livewire.public.home', ['posts' => $posts]);
   }
 }
