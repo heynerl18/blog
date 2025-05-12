@@ -1,24 +1,23 @@
-<div class="category-content max-w-5xl mx-auto px-4 mt-0 pt-0">
 
+<div class="tag-content max-w-5xl mx-auto px-4 mt-0 pt-0">
   <h1 class="text-4xl font-extrabold text-center tracking-tight mb-6 text-gray-900 dark:text-white">
-      <span class="text-blue-400 uppercase text-sm block mb-1 flex items-center justify-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M3 7a2 2 0 012-2h3.586a1 1 0 01.707.293l1.414 1.414A1 1 0 0011.414 7H19a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
-        </svg>
-        Categoría
-      </span>
-      {{ ucfirst($category->name) }}
-    </h1>
+    <span class="text-blue-400 uppercase text-sm block mb-1 flex items-center justify-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+          d="M7 7l10 10M7 7a2 2 0 114 0 2 2 0 01-4 0zM17.657 16.657a2 2 0 01-2.828 0l-6.829-6.828a4 4 0 115.657-5.657l6.829 6.828a2 2 0 010 2.828z" />
+      </svg>
+      Etiqueta
+    </span>
+    {{ ucfirst($tag->name) }}
+  </h1>
 
-  @if ($posts->isNotEmpty())
+  @if($posts->isNotEmpty())
     <ul class="space-y-8">
       @foreach ($posts as $post)
         @php
           $video = $post->media->firstWhere('file_type', 'video/mp4');
           $image = $post->media->where('file_type', '!=', 'video/mp4')->first();
         @endphp
-
         <li class="rounded-lg shadow-md overflow-hidden bg-white dark:bg-gray-800 transition transform hover:-translate-y-1 hover:shadow-xl animate-fade-in duration-300">
           <div class="relative w-full h-64 rounded-t-lg overflow-hidden">
             @if ($video)
@@ -59,6 +58,6 @@
       @endforeach
     </ul>
   @else
-    <p class="text-gray-600 dark:text-gray-300 text-center mt-10">No hay posts disponibles en esta categoría.</p>
+    <p class="text-gray-600 dark:text-gray-300 text-center mt-10">No hay posts disponibles en esta etiqueta.</p>
   @endif
 </div>

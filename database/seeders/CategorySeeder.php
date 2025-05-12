@@ -15,7 +15,7 @@ class CategorySeeder extends Seeder
    */
   public function run(): void
   {
-    Category::factory()->count(20)->create();
+    Category::factory()->count(15)->create();
     /* $categories = [
       'Tecnología', 'Programación', 'Diseño Web', 'Bases de Datos', 'Seguridad',
       'Frontend', 'Backend', 'Desarrollo Móvil', 'DevOps', 'Negocios'
