@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthSocialController;
 use App\Livewire\Public\Home;
+use App\Livewire\Public\PostShow;
 use App\Livewire\Public\PublicCategoryPosts;
 use App\Livewire\Public\PublicTagPosts;
 use Illuminate\Support\Facades\Route;
@@ -12,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', Home::class)->name('home');
 Route::get('/categories/{category:slug}', PublicCategoryPosts::class)->name('categories.index');
 Route::get('/tags/{tag:slug}', PublicTagPosts::class)->name('tags.index');
+Route::get('/posts/{post:slug}', PostShow::class)->name('posts.show');
+
 // ==================================================
 // Social Authentication Routes
 // ==================================================

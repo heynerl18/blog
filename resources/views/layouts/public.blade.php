@@ -33,7 +33,7 @@
       <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
         <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
           <li>
-            <a href="#" class="block py-2 px-3 md:p-0 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:dark:text-blue-500" aria-current="page">Inicio</a>
+            <a href="{{ route('home') }}" class="block py-2 px-3 md:p-0 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:dark:text-blue-500" aria-current="page">Inicio</a>
           </li>
           <li>
             <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar"
@@ -75,11 +75,27 @@
     {{ $slot }}
   </main>
 
-  {{-- <footer class="bg-white border-t border-gray-200 dark:bg-gray-900 dark:text-white">
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+
+  <footer class="mt-16 border-t border-gray-300 dark:border-gray-700 pt-8 pb-6 text-sm text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col items-center gap-4 text-center">
+
+
+      {{-- <div class="flex flex-wrap gap-4 justify-center">
+        <a href="/politica-privacidad" class="hover:underline hover:text-blue-600 dark:hover:text-blue-400">Política de privacidad</a>
+        <a href="/terminos" class="hover:underline hover:text-blue-600 dark:hover:text-blue-400">Términos</a>
+        <a href="/contacto" class="hover:underline hover:text-blue-600 dark:hover:text-blue-400">Contacto</a>
+      </div> --}}
+
+      <div>
+        © {{ date('Y') }} <strong>Tala Blog</strong>. Todos los derechos reservados.
+      </div>
+
+      <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+          class="text-blue-600 dark:text-blue-400 hover:underline text-sm">
+        Volver arriba ↑
+      </button>
     </div>
-  </footer> --}}
-  <p class="text-center">&copy; {{ date('Y') }} Tala Blog. Todos los derechos reservados.</p>
+  </footer>
 
   @livewireScripts
 </body>
