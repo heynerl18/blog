@@ -7,6 +7,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 
 class AuthSocialController extends Controller
 {
@@ -35,6 +36,6 @@ class AuthSocialController extends Controller
     );
 
     Auth::login($user);
-    return redirect()->route('dashboard');
+    return redirect()->intended('/dashboard');
   }
 }

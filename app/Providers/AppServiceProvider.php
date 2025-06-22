@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\Category;
+use App\Models\CommentLike;
+use App\Observers\CommentLikeObserver;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,5 +27,7 @@ class AppServiceProvider extends ServiceProvider
       $categories = Category::select('id', 'name')->get();
       $view->with('categories', $categories);
     });
+
+    CommentLike::observe(CommentLikeObserver::class);
   }
 }

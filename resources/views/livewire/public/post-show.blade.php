@@ -92,8 +92,10 @@
     @endif
 
     {{-- COMMENT BOX --}}
-    @livewire('public.comment-box', ['post' => $post], key($post->id))
+    @livewire('public.comment-box', ['post' => $post], key('box-'.$post->id))
+
     {{-- COMMENTS LIST --}}
+    @livewire('public.comment-list', ['post' => $post], key('list-'.$post->id))
 
   </div>
 
