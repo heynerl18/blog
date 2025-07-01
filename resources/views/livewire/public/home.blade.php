@@ -21,7 +21,7 @@
               <div class="text-sm text-gray-300">
                 📅 {{ $post->created_at->format('d M, Y') }}
                 @if($post->category)
-                  | 🏷️ <a href="{{ route('categories.index', $post->category->slug) }}" class="text-blue-400 hover:underline">{{ $post->category->name }}</a>
+                  | 🏷️ <a href="{{ route('public.categories.index', $post->category->slug) }}" class="text-blue-400 hover:underline">{{ $post->category->name }}</a>
                 @endif
               </div>
               <p class="text-sm text-gray-300 mt-2">{{ Str::limit($post->excerpt, 100) }}</p>
@@ -40,7 +40,7 @@
               <div class="text-sm text-gray-300">
                 📅 {{ $post->created_at->format('d M, Y') }}
                 @if($post->category)
-                  | 🏷️ <a href="{{ route('categories.index', $post->category->slug) }}" class="text-blue-400 hover:underline pointer-events-auto">{{ $post->category->name }}</a>
+                  | 🏷️ <a href="{{ route('public.categories.index', $post->category->slug) }}" class="text-blue-400 hover:underline pointer-events-auto">{{ $post->category->name }}</a>
                 @endif
               </div>
               <p class="text-sm text-gray-300 mt-2 pointer-events-auto">{{ Str::limit($post->excerpt, 100) }}</p>

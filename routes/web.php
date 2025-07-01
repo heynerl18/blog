@@ -12,12 +12,14 @@ use Illuminate\Support\Facades\Route;
 // ==================================================
 // Public Routes
 // ==================================================
-Route::get('/', Home::class)->name('home');
-Route::get('/categories/{category:slug}', PublicCategoryPosts::class)->name('categories.index');
-Route::get('/tags/{tag:slug}', PublicTagPosts::class)->name('tags.index');
-Route::get('/posts/{post:slug}', PostShow::class)->name('posts.show');
-Route::get('/contact', ContactForm::class)->name('contact');
-Route::get('/about', AboutPage::class)->name('about');
+Route::name('public.')->group(function () {
+  Route::get('/', Home::class)->name('home');
+  Route::get('/categories/{category:slug}', PublicCategoryPosts::class)->name('categories.index');
+  Route::get('/tags/{tag:slug}', PublicTagPosts::class)->name('tags.index');
+  Route::get('/posts/{post:slug}', PostShow::class)->name('posts.show');
+  Route::get('/contact', ContactForm::class)->name('contact');
+  Route::get('/about', AboutPage::class)->name('about');
+});
 
 // ==================================================
 // Social Authentication Routes
@@ -30,8 +32,8 @@ Route::prefix('auth')->group(function () {
 // ==================================================
 // Backend Routes (Protected by Authentication)
 // ==================================================
-Route::middleware(['auth', 'verified'])->group(function () {
-  Route::view('/dashboard', 'pages._index')->name('dashboard');
+Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('admin.')->group(function () {
+  Route::view('/', 'pages._index')->name('dashboard');
   Route::view('/categories', 'pages._categories')->name('categories');
   Route::view('/tags', 'pages._tags')->name('tags');
   Route::view('/posts', 'pages._posts')->name('posts.index');

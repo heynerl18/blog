@@ -57,15 +57,15 @@
 							Este blog es para y por nuestra gente. Me encantaría escuchar tus ideas, tus historias o si hay algo que te gustaría que cubra, porque somos vecinos y la opinión de cada uno es vital. ¡Tu participación es lo que hace a Talamanca al Día realmente especial!
 					</p>
 					<div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-							<a href="{{ route('contact') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+							<a href="{{ route('public.contact') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
 									Escríbeme un Mensaje
 							</a>
-							<a href="{{ route('home') }}" class="bg-transparent border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+							<a href="{{ route('public.home') }}" class="bg-transparent border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
 									Ver las Últimas Noticias
 							</a>
 					</div>
 					<p class="text-sm text-gray-500 dark:text-gray-400 mt-8">
-							¿Tienes una noticia, un evento o una sugerencia? <a href="{{ route('contact') }}" class="text-blue-600 hover:underline">¡Cuéntamelo!</a>
+							¿Tienes una noticia, un evento o una sugerencia? <a href="{{ route('public.contact') }}" class="text-blue-600 hover:underline">¡Cuéntamelo!</a>
 					</p>
 			</section>
 

@@ -1,5 +1,5 @@
 <div class="mt-12 mb-4">
-  <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Deja un comentario</h3>
+  <h3 class="text-lg font-semibold text-gray-500 dark:text-gray-400 mb-4">Deja un comentario</h3>
 
   <form wire:submit.prevent="sendComment">
     <label for="comment" class="sr-only">Tu comentario</label>

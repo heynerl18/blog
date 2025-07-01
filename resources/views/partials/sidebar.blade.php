@@ -27,7 +27,7 @@ $page_slug = end($url); // Obtener el último segmento de la URL como el slug
             </form>
           </li>
           <li>
-            <a href="{{ url('/') }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700">
+            <a href="{{ route('admin.dashboard') }}" class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700">
                 <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
                   <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
@@ -47,21 +47,21 @@ $page_slug = end($url); // Obtener el último segmento de la URL como el slug
             </button>
             <ul id="dropdown-crud" class="space-y-2 py-2 {{ $page_slug !== 'crud' ? 'hidden' : '' }}">
               <li>
-                <a href="{{ url('/categories') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'products' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Categorías</a>
+                <a href="{{ route('admin.categories') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'products' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Categorías</a>
               </li>
               <li>
-                <a href="{{ url('/tags') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'users' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Etiquetas</a>
+                <a href="{{ route('admin.tags') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'users' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Etiquetas</a>
               </li>
               <li>
-                <a href="{{ url('/posts') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'users' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Notas</a>
+                <a href="{{ route('admin.posts.index') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'users' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Notas</a>
               </li>
               <li>
                 @can('users.index')
-                  <a href="{{ url('/users') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'users' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Usuarios</a>
+                  <a href="{{ route('admin.users') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'users' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Usuarios</a>
                 @endcan
               </li>
               <li>
-                <a href="{{ url('/roles') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'users' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Roles</a>
+                <a href="{{ route('admin.roles') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'users' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Roles</a>
               </li>
             </ul>
           </li>

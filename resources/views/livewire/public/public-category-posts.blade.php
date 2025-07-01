@@ -34,20 +34,20 @@
           <div class="p-5">
 
             <h2 class="text-2xl font-bold mb-2">
-              <a href="{{ route('posts.show', $post->slug) }}"
+              <a href="{{ route('public.posts.show', $post->slug) }}"
                 class="inline-block text-gray-900 dark:text-white border-b-2 border-transparent hover:border-blue-600 transition">
                 {{ $post->title }}
               </a>
             </h2>
               
-            <div class="prose dark:prose-invert max-w-none mb-4">
+            <div class="prose prose-lg dark:prose-invert max-w-none mb-4 text-gray-500 dark:text-gray-400">
                 {!! Str::limit(strip_tags($post->content), 200) !!}
             </div>
 
             <div class="mt-3 flex flex-wrap gap-2">
               @foreach ($post->tags as $tag)
                 <a 
-                  href="{{ route('tags.index', $tag->slug) }}"
+                  href="{{ route('public.tags.index', $tag->slug) }}"
                   class="inline-block bg-blue-100 text-blue-900 text-xs font-bold px-3 py-1 rounded hover:bg-blue-200 dark:bg-blue-100 dark:text-blue-900 dark:hover:bg-blue-200 transition-colors cursor-pointer"
                 >
                   #{{ $tag->name }}

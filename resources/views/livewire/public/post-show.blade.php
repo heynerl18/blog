@@ -71,17 +71,18 @@
       @endif
     </div>
 
-    <div class="prose dark:prose-invert max-w-none text-justify">
+    <div class="prose prose-lg dark:prose-invert max-w-none text-justify text-gray-500 dark:text-gray-400 animate-fade-in transition-opacity duration-500 ease-out
+">
       {!! $post->content !!}
     </div>
 
     @if ($post->tags->isNotEmpty())
       <div class="mt-10">
-        <h3 class="text-base font-semibold text-gray-600 dark:text-gray-300 mb-2">Etiquetas relacionadas:</h3>
+        <h3 class="text-base font-semibold text-gray-500 dark:text-gray-400 mb-2">Etiquetas relacionadas:</h3>
         <div class="flex flex-wrap gap-2">
           @foreach ($post->tags as $tag)
             <a 
-              href="{{ route('tags.index', $tag->slug) }}"
+              href="{{ route('public.tags.index', $tag->slug) }}"
               class="inline-block bg-blue-300 text-blue-900 text-xs font-bold px-3 py-1 rounded hover:bg-blue-400 dark:bg-blue-300 dark:text-blue-900 dark:hover:bg-blue-400 transition-colors cursor-pointer"
             >
               #{{ $tag->name }}
@@ -126,7 +127,7 @@
           @endphp
 
           <li class="group">
-            <a href="{{ route('posts.show', $item->slug) }}" class="flex items-center gap-4 hover:bg-blue-100 dark:hover:bg-blue-900 p-2 rounded transition">
+            <a href="{{ route('public.posts.show', $item->slug) }}" class="flex items-center gap-4 hover:bg-blue-100 dark:hover:bg-blue-900 p-2 rounded transition">
 
               <div class="w-12 h-12 rounded bg-blue-700 text-white text-sm font-semibold flex items-center justify-center overflow-hidden flex-shrink-0">
                 @if ($image)
