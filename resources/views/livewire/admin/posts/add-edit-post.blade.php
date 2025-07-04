@@ -62,7 +62,7 @@
               {{-- id="media_type" --}} 
               name="media_type"
               class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-              wire:model.defer="selectedMediaType"
+              wire:model="selectedMediaType"
               {{-- x-on:change="mediaType = $event.target.value" --}}
               >
                 <option value="" selected>Selecciona una opción</option>
@@ -72,7 +72,7 @@
               <p id="filled_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">@error('selectedMediaType') <span class="font-medium">{{ $message }}</span> @enderror</p>   
             </div>
             
-            <div x-data="{ 
+            <div x-data="{
               videoPreview: @entangle('videoPreview'),
               handleVideoPreview(event) {
                 const file = event.target.files[0];
@@ -90,48 +90,64 @@
             class="col-span-6" 
             >
               {{-- Upload images --}}
-              <div x-show="$wire.selectedMediaType === 'image'">
+              <div  x-data="{
+                  mediaType: @entangle('selectedMediaType'),
+                  imagePreviews: @entangle('imagePreviews'),
+                  previewImages(event) {
+                    this.imagePreviews = []
+                    const files = event.target.files
+                    if (files.length > 0){
+                      for (let i = 0; i < files.length; i++) {
+                        this.imagePreviews.push(URL.createObjectURL(files[i]))
+                      }
+                    }
+                  }
+                }"
+                x-show="mediaType === 'image'"
+              >
                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Subir Imágenes</label>
                 <input 
                   class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
                   id="image_input" 
                   type="file"
                   wire:model="images"
-                  accept="image/jpeg, image/png"
+                  @change="previewImages($event)"
+                  accept="image/*"
                   multiple
                 >
                 <p id="filled_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">@error('images') <span class="font-medium">{{ $message }}</span> @enderror</p>   
-                <div class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" wire:loading wire:target="images">Subiendo...</div>
-                <div id="image_preview" class="mt-4 grid grid-cols-3 gap-4">
-                  {{-- Mostrar imágenes existentes y de la nuevas imágenes subidas --}}
-                  @foreach ($imagePreviews as $preview)
-                  <img src="{{ $preview }}" class="w-full h-40 object-cover rounded-lg shadow-xl dark:shadow-gray-800">
-                  @endforeach
+                {{-- <div class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" wire:loading wire:target="images">Subiendo...</div> --}}
+                <div class="mt-4 grid grid-cols-3 gap-4">
+                  <template x-for="src in imagePreviews" :key="src">
+                    <img :src="src" class="w-full h-40 object-cover rounded-lg shadow-xl dark:shadow-gray-800" />
+                  </template>
                 </div>
               </div>
               
               {{-- Upload video --}}
-              <div x-show="$wire.selectedMediaType === 'video'">
+              <div x-data="{ mediaType: @entangle('selectedMediaType') }" x-show="mediaType === 'video'" {{-- x-show="$wire.selectedMediaType === 'video'" --}}>
                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="video_input">Subir Video</label>
                 <input 
-                  class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
-                  id="video_input" 
-                  type="file"
-                  accept="video/mp4"
-                  wire:model="video"
-                  @change="handleVideoPreview($event)"
+                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
+                id="video_input" 
+                type="file"
+                accept="video/mp4"
+                wire:model="video"
+                @change="handleVideoPreview($event)"
                 >
                 <p id="filled_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">@error('video') <span class="font-medium">{{ $message }}</span> @enderror</p>   
                 {{-- <div class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" wire:loading wire:target="video">Subiendo...</div> --}}
               
                 <div x-show="videoPreview" class="mt-4">
-                  <video 
-                  controls 
-                    class="w-full h-80 rounded-lg shadow-xl dark:shadow-gray-800"
-                    x-bind:src="videoPreview"
-                  >
-                    Tu navegador no soporta la reproducción de videos.
-                  </video>
+                  @if ($videoPreview)
+                    <video 
+                      controls 
+                      class="w-full h-80 rounded-lg shadow-xl dark:shadow-gray-800"
+                      src="{{ $videoPreview }}"
+                    >
+                      Tu navegador no soporta la reproducción de videos.
+                    </video>
+                  @endif
                 </div>
               </div>
             </div>
@@ -142,7 +158,7 @@
               >
                 {{ $postId ? 'Actualizar' : 'Guardar' }} Nota
               </button> 
-              <a href="{{ route('posts.index') }}" class="bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Volver</a>
+              <a href="{{ route('admin.posts.index') }}" class="bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Volver</a>
             </div>
         </div>
       </form>

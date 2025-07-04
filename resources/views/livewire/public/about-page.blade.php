@@ -1,7 +1,7 @@
 <div class="container mx-auto px-4 py-12">
-	<h1 class="text-4xl font-extrabold text-gray-900 dark:text-white mb-8 text-center leading-tight">
+	{{-- <h1 class="text-4xl font-extrabold text-gray-900 dark:text-white mb-8 text-center leading-tight">
 		Acerca de: Talamanca al Día
-	</h1>
+	</h1> --}}
 
 		<div class="bg-white dark:bg-gray-800 shadow-xl rounded-lg p-8 md:p-12 mb-12">
 
@@ -9,17 +9,17 @@
 			<section class="mb-10 border-b border-gray-200 dark:border-gray-700 pb-8">
 					<h2 class="text-3xl font-semibold text-gray-800 dark:text-gray-200 mb-6 flex items-center">
 							<svg class="w-8 h-8 mr-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-							¡Hola, Talamanca! Soy [Tu Nombre]
+							¡Hola, Talamanca!
 					</h2>
 					<p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-							¡Bienvenidos a **Talamanca al Día**! Mi nombre es [Tu Nombre], y soy un talamanqueño/a más, nacido/a y criado/a en el corazón de este cantón que tanto amamos. Desde siempre, he sentido una profunda conexión con nuestra tierra, nuestra gente y la cultura única que nos define aquí en Limón, Costa Rica.
+							¡Bienvenidos a **Talamanca al Día**! Mi nombre es Gamaliel Molina Diaz, y soy un talamanqueño/a más, nacido/a y criado/a en el corazón de este cantón que tanto amamos. Desde siempre, he sentido una profunda conexión con nuestra tierra, nuestra gente y la cultura única que nos define aquí en Limón, Costa Rica.
 					</p>
 					<p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
 							Con este blog, mi misión es simple: ser la voz de Talamanca, desde Talamanca. Quiero compartir con ustedes las noticias, los eventos y las historias que verdaderamente importan en nuestra comunidad. Creo firmemente que mantenernos informados y conectados nos hace más fuertes, y mi compromiso es reflejar la esencia y el pulso de cada rincón de nuestro cantón.
 					</p>
 					{{-- Biografía del bloguero (descomentada y adaptada) --}}
 					<div class="flex flex-col md:flex-row items-center md:items-start mt-8 bg-gray-50 dark:bg-gray-900 p-6 rounded-lg">
-							<img src="{{ asset('images/tu-foto.jpg') }}" alt="Tu Nombre" class="rounded-full w-24 h-24 object-cover shadow-md mb-4 md:mb-0 md:mr-6">
+							<img src="https://scontent-gua1-1.xx.fbcdn.net/v/t39.30808-6/485994119_9414254465289898_1898241540994276157_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=W3dftcp4EvMQ7kNvwHydMI1&_nc_oc=AdlTQ2G4o8k44pC7eQBc8mhrhKB4dXZEGHwgi7cbGj4JpIjgyHXmScCBA1QeHQ8c939ISsG702KWECR0JaSV922Y&_nc_zt=23&_nc_ht=scontent-gua1-1.xx&_nc_gid=lVjDD04J-PkoS5Sb21zMTg&oh=00_AfMyh7EmTpkveEc4SD-LBi-4Ixx7Oubjh6e3GxyQaeKhZg&oe=686DD588{{-- {{ asset('images/tu-foto.jpg') }} --}}" alt="Tu Nombre" class="rounded-full w-24 h-24 object-cover shadow-md mb-4 md:mb-0 md:mr-6">
 							<div>
 									<h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">[Tu Nombre Completo]</h3>
 									<p class="text-gray-600 dark:text-gray-400 text-sm mb-2">Creador y Editor de Talamanca al Día</p>

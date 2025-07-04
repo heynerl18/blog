@@ -39,20 +39,32 @@ class AddEditPost extends Component
 
   protected function rules()
   {
-    return [
+    $rules = [
       'title' => ['required', 'string','min:3', 'max:255'],
       'category_id' => ['required', 'integer'],
       'selectedTags' => ['required', 'array', 'min:1', 'max:3'],
       'selectedTags.*' => ['integer', 'exists:tags,id'],
       'content' => 'required',
       'selectedMediaType' => ['nullable', 'in:image,video'],
-      'images' => $this->selectedMediaType === 'image'
+      /* 'images' => $this->selectedMediaType === 'image'
         ? ['nullable', 'array', 'max:4']
         : ['nullable'],
       'video' => $this->selectedMediaType === 'video'
         ? ['nullable', 'mimes:mp4', 'max:10240']
-        : ['nullable'],
+        : ['nullable'], */
     ];
+
+    if ($this->selectedMediaType === 'image') {
+      $rules['images'] = ['nullable', 'array', 'max:4'];
+      $rules['images.*'] = ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'];
+    }
+
+    if ($this->selectedMediaType === 'video') {
+      $rules['video'] = ['nullable', 'mimes:mp4', 'max:10240'];
+    }
+
+    return $rules;
+
   }
 
   protected function messages()
@@ -136,21 +148,20 @@ class AddEditPost extends Component
     $this->postStatus = !$this->postStatus;
   }
   
-  public function updatedImages()
+/*   public function updatedImages()
   {
-    $this->imagePreviews = [];
-    if (is_array($this->images)) {
-      $this->imagePreviews = [];
-      foreach ($this->images as $image) {
-        $this->imagePreviews[] = $image->temporaryUrl();
-      }
+   $this->imagePreviews = [];
+    foreach ($this->images as $image) {
+      logger()->info('MIME:', [$image->getMimeType()]);
+      $this->imagePreviews[] = 'data:' . $image->getMimeType() . ';base64,' . base64_encode(file_get_contents($image->getRealPath()));
+      //$image->temporaryUrl();
     }
-  }
+  } */
 
-  public function updatedVideo()
+/*   public function updatedVideo()
   {
     $this->videoPreview = $this->video->temporaryUrl();
-  }
+  } */
 
   public function updatedSelectedMediaType($value)
   {
@@ -159,9 +170,10 @@ class AddEditPost extends Component
       if ($this->existingVideo) {
         Storage::disk('public')->delete(str_replace('/storage/', '', $this->existingVideo->url));
         Media::where('id', $this->existingVideo->id)->delete();
-        $this->existingVideo = null;
-        $this->videoPreview = null;
       }
+      $this->existingVideo = null;
+      $this->video = null;
+      $this->videoPreview = null;
     } elseif ($value === 'video') {
       // If you switch to "video", delete existing images if any
       if ($this->existingImages) {
@@ -169,9 +181,10 @@ class AddEditPost extends Component
           Storage::disk('public')->delete(str_replace('/storage/', '', $existingImage['url']));
           Media::where('id', $existingImage['id'])->delete();
         }
-        $this->existingImages = [];
-        $this->imagePreviews = [];
       }
+      $this->existingImages = [];
+      $this->images = [];
+      $this->imagePreviews = [];
     }
   }
 
@@ -213,7 +226,7 @@ class AddEditPost extends Component
     $this->dispatch('refreshPosts');
     $message = $this->postId ? 'Nota actualizado correctamente.' : 'Nota creado correctamente.';
     session()->flash('alert', $message);
-    return redirect()->route('posts.index');
+    return redirect()->route('admin.posts.index');
   }
 
   protected function handleImages($post)
@@ -297,10 +310,11 @@ class AddEditPost extends Component
       'media',
       'images',
       'video',
-      //'imagePreviews',
-      //'videoPreview',
-      //'existingVideo',
-      //'existingImages'
+      'selectedMediaType',
+      'imagePreviews',
+      'videoPreview',
+      'existingVideo',
+      'existingImages'
     ]);
   }
 
