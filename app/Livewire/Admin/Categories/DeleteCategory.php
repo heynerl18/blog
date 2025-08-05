@@ -39,6 +39,7 @@ class DeleteCategory extends Component
 			}
 
 			$this->closeDeleteCategoryModal();
+			$this->dispatch('refreshCategories');
 			$this->dispatch('showAlert', message: $message);
 		} catch (\Exception $e) {
 

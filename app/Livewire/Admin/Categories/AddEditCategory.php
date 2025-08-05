@@ -13,14 +13,13 @@ class AddEditCategory extends Component
   public $name;
 
   protected $rules = [
-    'name' => 'required|min:3|max:255|unique:categories,name',
+    'name' => 'required|min:3|max:255',
   ];
 
   protected $messages = [
-    'name.required' => 'El nombre de la categoría es obligatorio.',
+    'name.required' => 'El nombre de la categoría es requerido.',
     'name.min' => 'El nombre debe tener al menos 3 caracteres.',
     'name.max' => 'El nombre no puede tener más de 255 caracteres.',
-    'name.unique' => 'Esta categoría ya existe.',
   ];
 
   #[On('openModal')]

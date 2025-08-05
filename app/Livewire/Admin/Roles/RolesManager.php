@@ -6,7 +6,9 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
 use Spatie\Permission\Models\Role;
+use Livewire\Attributes\Layout;
 
+#[Layout('layouts.app')]
 class RolesManager extends Component
 {
   use WithPagination;

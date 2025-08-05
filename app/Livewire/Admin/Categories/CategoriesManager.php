@@ -6,15 +6,17 @@ use App\Models\Category;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On; 
+use Livewire\Attributes\Layout;
 
+#[Layout('layouts.app')]
 class CategoriesManager extends Component
 {
   use WithPagination;
 
-  public $perPage = 10;
-  protected $listeners = ['pageChanged' => 'updatePage'];
+  public $perPage = 5;
   public $search = '';
 
+  #[On('pageChanged')]
   public function updatePage($page)
   {
     $this->setPage($page);
@@ -26,7 +28,7 @@ class CategoriesManager extends Component
   }
 
   #[On('refreshCategories')]
-  public function reloadTags()
+  public function reloadCategoriesList()
   {
     $this->resetPage();
   }
@@ -34,7 +36,7 @@ class CategoriesManager extends Component
   public function render()
   {
     $categories = Category::where('name', 'like', "%{$this->search}%")
-    ->paginate($this->perPage);
+      ->paginate($this->perPage);
     return view('livewire.admin.categories.categories-manager', ['categories' => $categories]);
   }
 

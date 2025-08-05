@@ -15,14 +15,13 @@ class AddEditTag extends Component
   public $name = '';
 
   protected $rules = [
-    'name' => 'required|min:3|max:255|unique:tags,name',
+    'name' => 'required|min:3|max:255',
   ];
 
   protected $messages = [
-    'name.required' => 'El nombre de la etiqueta es obligatorio.',
+    'name.required' => 'El nombre de la etiqueta es requerido.',
     'name.min' => 'El nombre debe tener al menos 3 caracteres.',
     'name.max' => 'El nombre no puede tener más de 255 caracteres.',
-    'name.unique' => 'Esta etiqueta ya existe.',
   ];
 
   #[On('openModal')]

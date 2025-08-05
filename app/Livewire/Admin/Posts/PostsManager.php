@@ -6,7 +6,9 @@ use App\Models\Post;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Layout;
 
+#[Layout('layouts.app')]
 class PostsManager extends Component
 {
   use WithPagination;

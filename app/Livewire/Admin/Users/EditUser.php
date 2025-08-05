@@ -7,27 +7,33 @@ use Livewire\Component;
 use Spatie\Permission\Models\Role;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
+use Spatie\Permission\PermissionRegistrar;
 
 class EditUser extends Component
 {
   public $userId;
   public $isModalOpen = false;
   #[Validate]
-  #[Validate('required', message: 'El nombre es obligatorio.')]
+  #[Validate('required', message: 'El nombre es requerido.')]
   public $name = '';
   public $selectedRoles = [];
 
   private function checkEditPermission()
   {
     if (!auth()->user()->can('users.edit')) {
-      abort(403, 'No tienes permiso para editar.');
+      session()->flash('error', 'No tienes permiso para editar usuarios.');
+      $this->closeModal();
+      return false;
     }
+    return true;
   }
 
   #[On('openModal')]
   public function openModal($userId)
   {
-    $this->checkEditPermission();
+    if (!$this->checkEditPermission()) {
+      return;
+    }
 
     $this->resetForm();
     $this->userId = $userId;
@@ -49,13 +55,17 @@ class EditUser extends Component
 
   public function save()
   {
-    $this->checkEditPermission();
+    if (!$this->checkEditPermission()) {
+      return;
+    }
     
     if ($this->userId) {
       $user = User::find($this->userId);
       $user->roles()->sync($this->selectedRoles);
       $message = 'Se asignó los roles correctamente.';
     }
+
+    app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
 
     $this->closeModal();
     $this->dispatch('refreshUsers');

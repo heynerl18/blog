@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\On;
 
 class Pagination extends Component
 {
@@ -13,8 +14,7 @@ class Pagination extends Component
   public $itemsPerPage; // Elementos por página
   public $currentPage = 1; // Página actual
 
-  protected $listeners = ['pageChanged' => 'updatePage'];
-
+  #[On('pageChanged')] 
   public function updatePage($page)
   {
     $this->currentPage = $page;
@@ -24,7 +24,7 @@ class Pagination extends Component
   {
     if ($this->currentPage > 1) {
       $this->currentPage--;
-      $this->dispatch('pageChanged', $this->currentPage); // Notificar a otros componentes
+      $this->dispatch('pageChanged', $this->currentPage);
     }
   }
 
@@ -32,7 +32,7 @@ class Pagination extends Component
   {
     if ($this->currentPage < ceil($this->totalItems / $this->itemsPerPage)) {
       $this->currentPage++;
-      $this->dispatch('pageChanged', $this->currentPage); // Notificar a otros componentes
+      $this->dispatch('pageChanged', $this->currentPage);
     }
   }
 

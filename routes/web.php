@@ -1,6 +1,12 @@
  <?php
 
 use App\Http\Controllers\AuthSocialController;
+use App\Livewire\Admin\Categories\CategoriesManager;
+use App\Livewire\Admin\Home\AdminHome;
+use App\Livewire\Admin\Posts\PostsManager;
+use App\Livewire\Admin\Roles\RolesManager;
+use App\Livewire\Admin\Tags\TagsManager;
+use App\Livewire\Admin\Users\UsersManager;
 use App\Livewire\Public\AboutPage;
 use App\Livewire\Public\ContactForm;
 use App\Livewire\Public\Home;
@@ -33,14 +39,14 @@ Route::prefix('auth')->group(function () {
 // Backend Routes (Protected by Authentication)
 // ==================================================
 Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('admin.')->group(function () {
-  Route::view('/', 'pages._index')->name('dashboard');
-  Route::view('/categories', 'pages._categories')->name('categories');
-  Route::view('/tags', 'pages._tags')->name('tags');
-  Route::view('/posts', 'pages._posts')->name('posts.index');
+  Route::get('/', AdminHome::class)->name('dashboard');
+  Route::get('/categories', CategoriesManager::class)->name('categories');
+  Route::get('/tags', TagsManager::class)->name('tags');
+  Route::get('/posts', PostsManager::class)->name('posts.index');
   Route::view('/posts/create', 'pages.forms.posts.create')->name('posts.create');
   Route::view('/posts/{postId}/edit', 'pages.forms.posts.edit')->name('posts.edit');
-  Route::view('/users', 'pages._users')->middleware('can:users.index')->name('users');
-  Route::view('/roles', 'pages._roles')->name('roles');
+  Route::get('/users', UsersManager::class)->middleware('can:users.index')->name('users');
+  Route::get('/roles', RolesManager::class)->name('roles');
 });
 
 require __DIR__ . '/auth.php';

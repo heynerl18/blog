@@ -6,7 +6,9 @@ use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On; 
+use Livewire\Attributes\Layout;
 
+#[Layout('layouts.app')]
 class UsersManager extends Component
 {
   use WithPagination;

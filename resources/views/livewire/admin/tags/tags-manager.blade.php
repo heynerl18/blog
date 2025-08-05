@@ -107,10 +107,11 @@
       </div>
   </div>
   {{-- Pagination --}}
-  <livewire:pagination
-    :totalItems="$tags->total()"
-    :itemsPerPage="$tags->perPage()"
-    :currentPage="$tags->currentPage()"
+  <livewire:pagination 
+    :key="$tags->currentPage() . '-' . $tags->total()" 
+    :totalItems="$tags->total()" 
+    :itemsPerPage="$tags->perPage()" 
+    :currentPage="$tags->currentPage()" 
   />
   {{-- Open Modal --}}
   @livewire('admin.tags.add-edit-tag')

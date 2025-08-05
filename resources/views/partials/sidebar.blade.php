@@ -45,15 +45,15 @@ $page_slug = end($url); // Obtener el último segmento de la URL como el slug
                   <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                 </svg>
             </button>
-            <ul id="dropdown-crud" class="space-y-2 py-2 {{ $page_slug !== 'crud' ? 'hidden' : '' }}">
+            <ul id="dropdown-crud" class="space-y-2 py-2 {{ !in_array($page_slug, ['products', 'categories', 'tags', 'posts', 'users', 'roles']) ? 'hidden' : '' }}">
               <li>
-                <a href="{{ route('admin.categories') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'products' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Categorías</a>
+                <a href="{{ route('admin.categories') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'categories' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Categorías</a>
               </li>
               <li>
-                <a href="{{ route('admin.tags') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'users' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Etiquetas</a>
+                <a href="{{ route('admin.tags') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'tags' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Etiquetas</a>
               </li>
               <li>
-                <a href="{{ route('admin.posts.index') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'users' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Notas</a>
+                <a href="{{ route('admin.posts.index') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'posts' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Notas</a>
               </li>
               <li>
                 @can('users.index')
@@ -61,7 +61,7 @@ $page_slug = end($url); // Obtener el último segmento de la URL como el slug
                 @endcan
               </li>
               <li>
-                <a href="{{ route('admin.roles') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'users' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Roles</a>
+                <a href="{{ route('admin.roles') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'roles' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Roles</a>
               </li>
             </ul>
           </li>

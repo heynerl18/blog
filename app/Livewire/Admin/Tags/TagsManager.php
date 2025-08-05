@@ -6,15 +6,17 @@ use App\Models\Tag;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On; 
+use Livewire\Attributes\Layout;
 
+#[Layout('layouts.app')]
 class TagsManager extends Component
 {
   use WithPagination;
 
-  public $perPage = 10;
-  protected $listeners = ['pageChanged' => 'updatePage'];
+  public $perPage = 5;
   public $search = '';
 
+  #[On('pageChanged')]
   public function updatePage($page)
   {
     $this->setPage($page);
@@ -26,7 +28,7 @@ class TagsManager extends Component
   }
 
   #[On('refreshTags')]
-  public function reloadTags()
+  public function reloadTagsList()
   {
     $this->resetPage();
   }

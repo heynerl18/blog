@@ -17,13 +17,12 @@ class AddEditRole extends Component
     public $selectedPermissions = [];
     
     protected $rules = [
-      'name' => 'required|min:3|max:255|unique:Roles,name',
+      'name' => 'required|min:3|max:255',
     ];
 
     protected $messages = [
       'name.required' => 'El nombre del rol es obligatorio.',
       'name.min' => 'El nombre debe tener al menos 3 caracteres.',
-      'name.unique' => 'Este rol ya existe.',
     ];
 
     #[On('openModal')]

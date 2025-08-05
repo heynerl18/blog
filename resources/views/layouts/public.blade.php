@@ -17,12 +17,12 @@
         <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Talablog</span>
       </a>
       
-      <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+      <div class="flex md:order-2 space-x-3 md:space-x-2 rtl:space-x-reverse items-center">
         @auth
           <span class="text-white bg-blue-700 font-medium rounded-lg text-sm px-4 py-2 text-center mr-2 cursor-default">
             Hola, {{ Auth::user()->name }}!
           </span>
-          @livewire('admin.auth.logout')
+          @livewire('public.logout-button')
         @else
           <a href="{{ route('login') }}" role="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mr-2">Iniciar sesión</a>
         @endauth
@@ -78,21 +78,12 @@
     </div>
   </nav>
   
-  <main class="py-4 mt-6"> <!-- Added mt-16 to prevent content from overlapping the navbar -->
+  <main class="py-4 mt-6">
     {{ $slot }}
   </main>
 
-
   <footer class="mt-16 border-t border-gray-300 dark:border-gray-700 pt-8 pb-6 text-sm text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-900">
     <div class="max-w-7xl mx-auto px-4 flex flex-col items-center gap-4 text-center">
-
-
-      {{-- <div class="flex flex-wrap gap-4 justify-center">
-        <a href="/politica-privacidad" class="hover:underline hover:text-blue-600 dark:hover:text-blue-400">Política de privacidad</a>
-        <a href="/terminos" class="hover:underline hover:text-blue-600 dark:hover:text-blue-400">Términos</a>
-        <a href="/contacto" class="hover:underline hover:text-blue-600 dark:hover:text-blue-400">Contacto</a>
-      </div> --}}
-
       <div>
         © {{ date('Y') }} <strong>Tala Blog</strong>. Todos los derechos reservados.
       </div>
