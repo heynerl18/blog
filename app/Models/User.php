@@ -55,6 +55,22 @@ class User extends Authenticatable
     ];
   }
 
+  // * Check if the user has a specific role
+  public function isAdmin(): bool
+  {
+    return $this->hasRole('Admin');
+  }
+
+  public function isBlogger(): bool
+  {
+    return $this->hasRole('Blogger');
+  }
+
+  public function hasAccessToDashboard(): bool
+  {
+    return $this->hasRole(['Admin', 'Blogger']);
+  }
+
   // * Indicate one user can have many posts
   public function posts()
   {

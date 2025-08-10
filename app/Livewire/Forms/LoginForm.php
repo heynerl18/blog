@@ -44,10 +44,10 @@ class LoginForm extends Form
   protected function messages()
   {
     return [
-      'email.required'    => 'El campo correo electrónico es obligatorio.',
+      'email.required'    => 'El campo correo electrónico es requerido.',
       'email.string'      => 'El correo electrónico debe ser una cadena de texto.',
       'email.email'       => 'El campo email debe ser una dirección de correo válida.',
-      'password.required' => 'El campo contraseña es obligatorio.',
+      'password.required' => 'El campo contraseña es requerido.',
       'password.string'   => 'La contraseña debe ser una cadena de texto.',
       'password.min'      => 'La contraseña debe tener al menos 8 caracteres.',
     ];

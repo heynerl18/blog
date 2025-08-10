@@ -38,15 +38,17 @@ Route::prefix('auth')->group(function () {
 // ==================================================
 // Backend Routes (Protected by Authentication)
 // ==================================================
-Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('admin.')->group(function () {
-  Route::get('/', AdminHome::class)->name('dashboard');
-  Route::get('/categories', CategoriesManager::class)->name('categories');
-  Route::get('/tags', TagsManager::class)->name('tags');
-  Route::get('/posts', PostsManager::class)->name('posts.index');
-  Route::view('/posts/create', 'pages.forms.posts.create')->name('posts.create');
-  Route::view('/posts/{postId}/edit', 'pages.forms.posts.edit')->name('posts.edit');
-  Route::get('/users', UsersManager::class)->middleware('can:users.index')->name('users');
-  Route::get('/roles', RolesManager::class)->name('roles');
+Route::middleware(['auth', 'verified', 'role:Admin|Blogger'])
+  ->prefix('dashboard')->name('admin.')
+  ->group(function () {
+    Route::get('/', AdminHome::class)->name('dashboard');
+    Route::get('/categories', CategoriesManager::class)->name('categories');
+    Route::get('/tags', TagsManager::class)->name('tags');
+    Route::get('/posts', PostsManager::class)->name('posts.index');
+    Route::view('/posts/create', 'pages.forms.posts.create')->name('posts.create');
+    Route::view('/posts/{postId}/edit', 'pages.forms.posts.edit')->name('posts.edit');
+    Route::get('/users', UsersManager::class)->middleware('can:users.index')->name('users');
+    Route::get('/roles', RolesManager::class)->name('roles');
 });
 
 require __DIR__ . '/auth.php';
