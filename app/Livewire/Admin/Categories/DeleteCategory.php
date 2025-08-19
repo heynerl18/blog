@@ -39,13 +39,19 @@ class DeleteCategory extends Component
 			}
 
 			$this->closeDeleteCategoryModal();
+
 			$this->dispatch('refreshCategories');
+
 			$this->dispatch('showAlert', message: $message);
+
 		} catch (\Exception $e) {
 
 			$this->closeDeleteCategoryModal();
+
 			$message = 'Ocurrió un error al eliminar la categoría. Por favor, inténtalo de nuevo.';
+
 			$this->dispatch('showAlert', message: $message);
+			
 			Log::error('Error al eliminar la etiqueta: ' . $e->getMessage());
 		}
 	}

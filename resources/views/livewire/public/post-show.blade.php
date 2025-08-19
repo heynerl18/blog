@@ -1,6 +1,5 @@
 <div class="max-w-7xl mx-auto px-4 pt-6 lg:pt-10 grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-10">
 
-  {{-- CONTENIDO PRINCIPAL --}}
   <div>
     <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-3 leading-tight">
       {{ $post->title }}
@@ -20,8 +19,11 @@
         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.7 9.85v-6.98h-2.6v-2.87h2.6v-2.2c0-2.56 1.52-3.98 3.86-3.98 1.12 0 2.3.2 2.3.2v2.54h-1.3c-1.28 0-1.68.8-1.68 1.6v1.84h2.84l-.45 2.87h-2.39v6.98A10 10 0 0 0 22 12"/></svg>
         Compartir
       </a>
+
       <button onclick="copyUrl(this)" class="flex items-center gap-2 px-4 py-1 text-sm font-medium border border-gray-400 dark:border-gray-600 rounded text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition">
-        <span class="icon-wrapper"></span>
+        <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linejoin="round" stroke-width="1" d="M9 8v3a1 1 0 0 1-1 1H5m11 4h2a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v1m4 3v10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-7.13a1 1 0 0 1 .24-.65L7.7 8.35A1 1 0 0 1 8.46 8H13a1 1 0 0 1 1 1Z"/>
+        </svg>
         <span class="label">Copiar URL</span>
       </button>
     </div>
@@ -52,17 +54,17 @@
               <button type="button" class="w-3 h-3 rounded-full " aria-label="Slide {{ $index + 1 }}" data-carousel-slide-to="{{ $index }}" {{ $index === 0 ? 'aria-current=true' : '' }}></button>
             @endforeach
           </div>
-
           <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
-            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70">
-              <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" fill="none" viewBox="0 0 6 10">
+            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/40 dark:bg-gray-800/40 group-hover:bg-white/60 dark:group-hover:bg-gray-700/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 shadow-lg">
+              <svg class="w-4 h-4 text-gray-800 dark:text-white rtl:rotate-180" fill="none" viewBox="0 0 6 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
               </svg>
             </span>
           </button>
+
           <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
-            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70">
-              <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" fill="none" viewBox="0 0 6 10">
+            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/40 dark:bg-gray-800/40 group-hover:bg-white/60 dark:group-hover:bg-gray-700/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 shadow-lg">
+              <svg class="w-4 h-4 text-gray-800 dark:text-white rtl:rotate-180" fill="none" viewBox="0 0 6 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
               </svg>
             </span>
@@ -71,8 +73,7 @@
       @endif
     </div>
 
-    <div class="prose prose-lg dark:prose-invert max-w-none text-justify text-gray-500 dark:text-gray-400 animate-fade-in transition-opacity duration-500 ease-out
-">
+    <div class="prose prose-lg dark:prose-invert max-w-none text-justify text-gray-500 dark:text-gray-400 animate-fade-in transition-opacity duration-500 ease-out">
       {!! $post->content !!}
     </div>
 
@@ -93,10 +94,10 @@
     @endif
 
     {{-- COMMENT BOX --}}
-    @livewire('public.comment-box', ['post' => $post], key('box-'.$post->id))
+    @livewire('public.comment.comment-box', ['post' => $post], key('box-'.$post->id))
 
     {{-- COMMENTS LIST --}}
-    @livewire('public.comment-list', ['post' => $post], key('list-'.$post->id))
+    @livewire('public.comment.comment-list', ['post' => $post], key('list-'.$post->id))
 
   </div>
 
@@ -151,41 +152,29 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.icon-wrapper').forEach(el => {
-      el.innerHTML = `
-        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-          <path stroke="currentColor" stroke-linejoin="round" stroke-width="1" d="M9 8v3a1 1 0 0 1-1 1H5m11 4h2a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v1m4 3v10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-7.13a1 1 0 0 1 .24-.65L7.7 8.35A1 1 0 0 1 8.46 8H13a1 1 0 0 1 1 1Z"/>
-        </svg>
-      `;
-    });
-  });
-
-  function copyUrl(button) {
-    const url = '{{ request()->url() }}';
-    navigator.clipboard.writeText(url).then(() => {
-      const iconWrapper = button.querySelector('.icon-wrapper');
-      const label = button.querySelector('.label');
-
-      iconWrapper.innerHTML = `
-        <svg class="w-6 h-6 text-green-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 11.917 9.724 16.5 19 7.5"/>
-        </svg>
-      `;
-
-      label.textContent = 'URL copiado!';
-      label.classList.add('font-bold', 'text-green-500');
-
-      setTimeout(() => {
-        iconWrapper.innerHTML = `
-          <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linejoin="round" stroke-width="1" d="M9 8v3a1 1 0 0 1-1 1H5m11 4h2a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v1m4 3v10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-7.13a1 1 0 0 1 .24-.65L7.7 8.35A1 1 0 0 1 8.46 8H13a1 1 0 0 1 1 1Z"/>
-          </svg>
-        `;
-        label.textContent = 'Copiar URL';
-        label.classList.remove('font-bold', 'text-green-500');
-      }, 2500);
-    });
+function copyUrl(button) {
+  const url = '{{ request()->url() }}';
+  const label = button.querySelector('.label');
+  
+  const textArea = document.createElement("textarea");
+  textArea.value = url;
+  document.body.appendChild(textArea);
+  textArea.select();
+  
+  try {
+    document.execCommand('copy');
+    label.textContent = 'URL copiado!';
+    label.classList.add('text-green-500', 'font-semibold');
+  } catch (err) {
+    label.textContent = 'Error al copiar';
+    label.classList.add('text-red-500', 'font-semibold');
   }
+  
+  document.body.removeChild(textArea);
+  
+  setTimeout(() => {
+    label.textContent = 'Copiar URL';
+    label.classList.remove('text-green-500', 'text-red-500', 'font-semibold');
+  }, 1000);
+}
 </script>
-

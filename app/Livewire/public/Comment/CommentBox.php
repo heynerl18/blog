@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Public;
+namespace App\Livewire\Public\Comment;
 
 use App\Models\Comment;
 use App\Models\Post;
@@ -53,7 +53,7 @@ class CommentBox extends Component
 			]);
 
 		  $this->reset('comment');
-			$this->dispatch('commentAdded', $newComment->id)->to('public.comment-list');
+			$this->dispatch('commentAdded', $newComment->id)->to('public.comment.comment-list');
 
 		} catch (ValidationException $e) {
 			throw $e;
@@ -62,6 +62,6 @@ class CommentBox extends Component
 
 	public function render()
 	{
-		return view('livewire.public.comment-box');
+		return view('livewire.public.comment.comment-box');
 	}
 }

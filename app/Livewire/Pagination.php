@@ -10,9 +10,9 @@ class Pagination extends Component
 {
   use WithPagination;
 
-  public $totalItems; // Total de elementos
-  public $itemsPerPage; // Elementos por página
-  public $currentPage = 1; // Página actual
+  public $totalItems;
+  public $itemsPerPage;
+  public $currentPage = 1;
 
   #[On('pageChanged')] 
   public function updatePage($page)
@@ -38,7 +38,7 @@ class Pagination extends Component
 
   public function render()
   {
-    // Calcular el rango de elementos mostrados
+    // calculate the start and end item numbers for the current page
     $startItem = ($this->currentPage - 1) * $this->itemsPerPage + 1;
     $endItem = min($this->currentPage * $this->itemsPerPage, $this->totalItems);
 

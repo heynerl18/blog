@@ -21,7 +21,7 @@ class AddEditRole extends Component
     ];
 
     protected $messages = [
-      'name.required' => 'El nombre del rol es obligatorio.',
+      'name.required' => 'El nombre del rol es requerido.',
       'name.min' => 'El nombre debe tener al menos 3 caracteres.',
     ];
 

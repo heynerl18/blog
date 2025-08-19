@@ -66,7 +66,10 @@ export default {
     }),
     require('flowbite-typography'),
     // Plugins of Tailwind CSS
-    forms,
+    //forms,
+      require('@tailwindcss/forms')({
+      strategy: 'class', // or 'base'
+    }),
   ],
 
 };

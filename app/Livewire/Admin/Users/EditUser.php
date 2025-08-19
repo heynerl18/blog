@@ -40,8 +40,10 @@ class EditUser extends Component
 
     if ($userId) {
       // edit mode
-      $user = User::find($userId);
+      $user = User::with('roles')->find($userId);
       $this->name = $user->name;
+      // load roles
+      $this->selectedRoles = $user->roles->pluck('id')->toArray();
     }
     $this->isModalOpen = true;
   }

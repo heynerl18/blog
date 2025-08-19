@@ -8,6 +8,8 @@ use App\Observers\CommentLikeObserver;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
+use Illuminate\Support\Facades\URL;
+
 class AppServiceProvider extends ServiceProvider
 {
   /**
@@ -29,5 +31,9 @@ class AppServiceProvider extends ServiceProvider
     });
 
     CommentLike::observe(CommentLikeObserver::class);
+
+    if (str_contains(config('app.url'), 'ngrok')) {
+      URL::forceScheme('https');
+    }
   }
 }

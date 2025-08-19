@@ -14,9 +14,9 @@ class UsersManager extends Component
   use WithPagination;
 
   public $perPage = 10;
-  protected $listeners = ['pageChanged' => 'updatePage'];
   public $search = '';
 
+  #[On('pageChanged')]
   public function updatePage($page)
   {
     $this->setPage($page);
@@ -28,7 +28,7 @@ class UsersManager extends Component
   }
 
   #[On('refreshUsers')]
-  public function reloadTags()
+  public function reloadUsers()
   {
     $this->resetPage();
   }

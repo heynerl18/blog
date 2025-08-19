@@ -14,9 +14,9 @@ class RolesManager extends Component
   use WithPagination;
 
   public $perPage = 5;
-  protected $listeners = ['pageChanged' => 'updatePage'];
   public $search = '';
-
+  
+  #[On('pageChanged')]
   public function updatePage($page)
   {
     $this->setPage($page);
@@ -28,7 +28,7 @@ class RolesManager extends Component
   }
 
   #[On('refreshRoles')]
-  public function reloadTags()
+  public function reloadRoles()
   {
     $this->resetPage();
   }

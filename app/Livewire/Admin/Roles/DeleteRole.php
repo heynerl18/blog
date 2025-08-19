@@ -43,8 +43,11 @@ class DeleteRole extends Component
 		} catch (\Exception $e) {
 
 			$this->closeDeleteModal();
+
 			$message = 'Ocurrió un error al eliminar el rol. Por favor, inténtalo de nuevo.';
+
 			$this->dispatch('showAlert', message: $message);
+			
 			Log::error('Error al eliminar el rol: ' . $e->getMessage());
 		}
 	}

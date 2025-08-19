@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Public;
+namespace App\Livewire\Public\Comment;
 
 use App\Models\Comment;
 use App\Models\CommentLike;
@@ -17,6 +17,10 @@ class CommentList extends Component
 	public $replyingTo = null;
 	public $replyComment = null;
 	public $collapsedReplies = [];
+
+	public $editingComment = null;
+	public $editCommentContent = '';
+
 
 	public function mount(Post $post)
 	{
@@ -38,29 +42,29 @@ class CommentList extends Component
 	{
 		// Load comments from the database
 		$this->comments = $this->post->comments()
-										->with([
-											'user',
-											'replies.user',
-											// Load likes for the current user
-											'likes' => function($query) {
-												if(Auth::check()) {
-													$query->where('user_id', Auth::id());
-												}else {
-													$query->whereRaw('1=0'); // No likes for unauthenticated users
-												}
-											},
-											// Load replies with user and likes for the current user
-											'replies.likes' => function($query) {
-												if(Auth::check()) {
-													$query->where('user_id', Auth::id());
-												}else {
-													$query->whereRaw('1=0'); // No likes for unauthenticated users
-												}
-											},
-										])
-										->whereNull('parent_id')
-										->orderBy('created_at', 'desc')
-										->get();
+			->with([
+				'user',
+				'replies.user',
+				// Load likes for the current user
+				'likes' => function($query) {
+					if(Auth::check()) {
+						$query->where('user_id', Auth::id());
+					}else {
+						$query->whereRaw('1=0'); // No likes for unauthenticated users
+					}
+				},
+				// Load replies with user and likes for the current user
+				'replies.likes' => function($query) {
+					if(Auth::check()) {
+						$query->where('user_id', Auth::id());
+					}else {
+						$query->whereRaw('1=0'); // No likes for unauthenticated users
+					}
+				},
+			])
+			->whereNull('parent_id')
+			->orderBy('created_at', 'desc')
+			->get();
 	}
 
 	public function setReply($commentId)
@@ -92,8 +96,8 @@ class CommentList extends Component
 
 		// Check if the user has already liked this comment
 		$existingInteraction = CommentLike::where('comment_id', $commentId)
-															->where('user_id', $userId)
-															->first();
+			->where('user_id', $userId)
+			->first();
 
 		if($existingInteraction) {
 			// User has already interacted with this comment
@@ -132,8 +136,9 @@ class CommentList extends Component
     }
 
 		$existingInteraction = CommentLike::where('user_id', $userId)
-                                          ->where('comment_id', $commentId)
-                                          ->first();
+			->where('comment_id', $commentId)
+			->first();
+			
 		if ($existingInteraction) {
 			if(!$existingInteraction->is_like) {
 				// If the existing interaction was a DISLIKE, and they click DISLIKE again, we remove it (UNDISLIKE)
@@ -208,8 +213,46 @@ class CommentList extends Component
 		}
 	}
 
+	public function editComment($commentId){
+		$comment = Comment::find($commentId);
+		// Verify if the user can edit the comment
+		if(Auth::id() !== $comment->user_id) {
+			return;
+		}
+
+		$this->editingComment = $commentId;
+		$this->editCommentContent = $comment->comment;
+	}
+
+	public function updateComment($commentId){
+		$comment = Comment::find($commentId);
+		// Verify permission to edit
+    if (Auth::id() !== $comment->user_id) {
+      return;
+    }
+
+		$comment->update([
+			'comment' => $this->editCommentContent,
+		]);
+
+		$this->cancelEditComment();
+		$this->loadComments();
+	}
+
+	public function cancelEditComment(){
+		$this->editingComment = null;
+		$this->editCommentContent = '';
+	}
+
+	#[On('commentDeleted')]
+	public function reloadCommentsList() // This method is called when a comment is deleted
+	{
+		$this->loadComments();
+		$this->collapseAllReplies();
+	}
+
 	public function render()
 	{
-		return view('livewire.public.comment-list');
+		return view('livewire.public.comment.comment-list');
 	}
 }
