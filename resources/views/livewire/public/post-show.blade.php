@@ -12,14 +12,12 @@
     </div>
 
     <div class="flex gap-2 mb-6">
-
       <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->url()) }}"
         target="_blank"
         class="flex items-center gap-2 px-4 py-1 text-sm font-medium border border-gray-400 dark:border-gray-600 rounded text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition">
         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.7 9.85v-6.98h-2.6v-2.87h2.6v-2.2c0-2.56 1.52-3.98 3.86-3.98 1.12 0 2.3.2 2.3.2v2.54h-1.3c-1.28 0-1.68.8-1.68 1.6v1.84h2.84l-.45 2.87h-2.39v6.98A10 10 0 0 0 22 12"/></svg>
         Compartir
       </a>
-
       <button onclick="copyUrl(this)" class="flex items-center gap-2 px-4 py-1 text-sm font-medium border border-gray-400 dark:border-gray-600 rounded text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition">
         <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
           <path stroke="currentColor" stroke-linejoin="round" stroke-width="1" d="M9 8v3a1 1 0 0 1-1 1H5m11 4h2a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v1m4 3v10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-7.13a1 1 0 0 1 .24-.65L7.7 8.35A1 1 0 0 1 8.46 8H13a1 1 0 0 1 1 1Z"/>
@@ -33,45 +31,48 @@
       $images = $post->media->where('file_type', '!=', 'video/mp4');
     @endphp
 
-    <div class="relative w-full rounded-md overflow-hidden shadow mb-6 h-[400px]">
-      @if ($video)
-        <video src="{{ asset($video->url) }}" controls class="absolute inset-0 w-full h-full object-cover"></video>
-      @elseif ($images->isNotEmpty())
-        <div id="indicators-carousel" class="relative w-full h-full rounded-md overflow-hidden" data-carousel="static">
-          <div class="relative w-full h-full overflow-hidden rounded-lg">
-            @foreach ($images as $index => $img)
-              <div class="absolute w-full h-full {{ $index === 0 ? '' : 'hidden' }} duration-700 ease-in-out" data-carousel-item="{{ $index === 0 ? 'active' : '' }}">
-                <img 
-                  src="{{ asset($img->url) }}" 
-                  alt="{{ $post->title }}" 
-                  class="block w-full h-full object-cover"
-                >
+    {{-- Condición para mostrar el carrusel o el video solo si existen --}}
+    @if ($video || $images->isNotEmpty())
+        <div class="relative w-full rounded-md overflow-hidden shadow mb-6 h-[400px]">
+          @if ($video)
+            <video src="{{ asset($video->url) }}" controls class="absolute inset-0 w-full h-full object-cover"></video>
+          @elseif ($images->isNotEmpty())
+            <div id="indicators-carousel" class="relative w-full h-full rounded-md overflow-hidden" data-carousel="static">
+              <div class="relative w-full h-full overflow-hidden rounded-lg">
+                @foreach ($images as $index => $img)
+                  <div class="absolute w-full h-full {{ $index === 0 ? '' : 'hidden' }} duration-700 ease-in-out" data-carousel-item="{{ $index === 0 ? 'active' : '' }}">
+                    <img 
+                      src="{{ asset($img->url) }}" 
+                      alt="{{ $post->title }}" 
+                      class="block w-full h-full object-cover"
+                    >
+                  </div>
+                @endforeach
               </div>
-            @endforeach
-          </div>
-          <div class="absolute z-30 flex -translate-x-1/2 space-x-3 rtl:space-x-reverse bottom-5 left-1/2">
-            @foreach ($images as $index => $img)
-              <button type="button" class="w-3 h-3 rounded-full " aria-label="Slide {{ $index + 1 }}" data-carousel-slide-to="{{ $index }}" {{ $index === 0 ? 'aria-current=true' : '' }}></button>
-            @endforeach
-          </div>
-          <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
-            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/40 dark:bg-gray-800/40 group-hover:bg-white/60 dark:group-hover:bg-gray-700/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 shadow-lg">
-              <svg class="w-4 h-4 text-gray-800 dark:text-white rtl:rotate-180" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-              </svg>
-            </span>
-          </button>
+              <div class="absolute z-30 flex -translate-x-1/2 space-x-3 rtl:space-x-reverse bottom-5 left-1/2">
+                @foreach ($images as $index => $img)
+                  <button type="button" class="w-3 h-3 rounded-full " aria-label="Slide {{ $index + 1 }}" data-carousel-slide-to="{{ $index }}" {{ $index === 0 ? 'aria-current=true' : '' }}></button>
+                @endforeach
+              </div>
+              <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
+                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/40 dark:bg-gray-800/40 group-hover:bg-white/60 dark:group-hover:bg-gray-700/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 shadow-lg">
+                  <svg class="w-4 h-4 text-gray-800 dark:text-white rtl:rotate-180" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+                  </svg>
+                </span>
+              </button>
 
-          <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
-            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/40 dark:bg-gray-800/40 group-hover:bg-white/60 dark:group-hover:bg-gray-700/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 shadow-lg">
-              <svg class="w-4 h-4 text-gray-800 dark:text-white rtl:rotate-180" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-              </svg>
-            </span>
-          </button>
+              <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
+                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/40 dark:bg-gray-800/40 group-hover:bg-white/60 dark:group-hover:bg-gray-700/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 shadow-lg">
+                  <svg class="w-4 h-4 text-gray-800 dark:text-white rtl:rotate-180" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                  </svg>
+                </span>
+              </button>
+            </div>
+          @endif
         </div>
-      @endif
-    </div>
+    @endif
 
     <div class="prose prose-lg dark:prose-invert max-w-none text-justify text-gray-500 dark:text-gray-400 animate-fade-in transition-opacity duration-500 ease-out">
       {!! $post->content !!}

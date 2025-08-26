@@ -21,7 +21,7 @@ class AddEditPost extends Component
   public $title = '';
   public $category_id;
   public $selectedTags = [];
-  public $postStatus;
+  public $postStatus = false;
   public $content = '';
   public $media;
   public $images = [];
@@ -45,26 +45,39 @@ class AddEditPost extends Component
       'selectedTags' => ['required', 'array', 'min:1', 'max:3'],
       'selectedTags.*' => ['integer', 'exists:tags,id'],
       'content' => 'required',
-      'selectedMediaType' => ['nullable', 'in:image,video'],
-      /* 'images' => $this->selectedMediaType === 'image'
-        ? ['nullable', 'array', 'max:4']
-        : ['nullable'],
-      'video' => $this->selectedMediaType === 'video'
-        ? ['nullable', 'mimes:mp4', 'max:10240']
-        : ['nullable'], */
     ];
 
-    if ($this->selectedMediaType === 'image') {
+    // Si se selecciona un tipo de media, entonces es requerido subir el archivo correspondiente
+    if (!empty($this->selectedMediaType)) {
+      $rules['selectedMediaType'] = ['required', 'in:image,video'];
+
+      if ($this->selectedMediaType === 'image') {
+        // Si selecciona imagen, debe subir imágenes (excepto si está editando y ya tiene imágenes existentes)
+        if (!$this->postId || empty($this->existingImages)) {
+          $rules['images'] = ['required', 'array', 'min:1', 'max:4'];
+        } else {
+          $rules['images'] = ['nullable', 'array', 'max:4'];
+        }
+        $rules['images.*'] = ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'];
+      }
+
+      if ($this->selectedMediaType === 'video') {
+        // Si selecciona video, debe subir video (excepto si está editando y ya tiene video existente)
+        if (!$this->postId || !$this->existingVideo) {
+          $rules['video'] = ['required', 'mimes:mp4', 'max:10240'];
+        } else {
+          $rules['video'] = ['nullable', 'mimes:mp4', 'max:10240'];
+        }
+      }
+    } else {
+      // Si no se selecciona tipo de media, los campos son opcionales
+      $rules['selectedMediaType'] = ['nullable', 'in:image,video'];
       $rules['images'] = ['nullable', 'array', 'max:4'];
       $rules['images.*'] = ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'];
-    }
-
-    if ($this->selectedMediaType === 'video') {
       $rules['video'] = ['nullable', 'mimes:mp4', 'max:10240'];
     }
 
     return $rules;
-
   }
 
   protected function messages()
@@ -74,20 +87,23 @@ class AddEditPost extends Component
       'title.string' => 'El título debe ser una cadena de texto.',
       'title.min' => 'Este título es demasiado corto.',
       'title.max' => 'El título no debe superar los 255 caracteres.',
-      'category_id' => 'Por favor selecciona una categoría.',
+      'category_id.required' => 'Por favor selecciona una categoría.',
       'category_id.integer' => 'El campo categoría debe ser un número válido.',
       'selectedTags.required' => 'Por favor selecciona al menos una etiqueta.',
       'selectedTags.array' => 'Las etiquetas seleccionados deben ser un arreglo.',
       'selectedTags.min' => 'Selecciona al menos una etiqueta.',
-      'selectedTags.max' => 'No puedes seleccionar más de 4 etiquetas.',
+      'selectedTags.max' => 'No puedes seleccionar más de 3 etiquetas.',
       'selectedTags.*.integer' => 'Cada etiqueta seleccionado debe ser un número válido.',
       'content.required' => 'Por favor proporcione el contenido de la nota.',
-      'selectedMediaType.required' => 'Por favor selecciona una opción.',
+      'selectedMediaType.required' => 'Por favor selecciona una opción de tipo de archivo.',
       'selectedMediaType.in' => 'La opción seleccionada no es válida. Debe ser "image" o "video".',
       'images.required' => 'Por favor selecciona al menos una imagen.',
       'images.array' => 'Las imágenes deben ser un arreglo de archivos.',
       'images.min' => 'Debes seleccionar al menos una imagen.',
       'images.max' => 'Puedes subir un máximo de 4 imágenes.',
+      'images.*.image' => 'Cada archivo debe ser una imagen válida.',
+      'images.*.mimes' => 'Las imágenes deben ser archivos JPG, JPEG o PNG.',
+      'images.*.max' => 'Cada imagen no debe superar los 2 MB.',
       'video.required' => 'Por favor selecciona un archivo de video.',
       'video.mimes' => 'El archivo debe ser un video en formato MP4.',
       'video.max' => 'El video no debe superar los 10 MB.',
@@ -108,7 +124,6 @@ class AddEditPost extends Component
       $this->content = $post->content;
       
       // Load previews of existing images and video
-
       $this->media = $post->media()->get();
 
       $hasImages = $this->media->whereIn('file_type', ['image/png', 'image/jpeg', 'image/jpg'])->isNotEmpty();
@@ -148,21 +163,6 @@ class AddEditPost extends Component
     $this->postStatus = !$this->postStatus;
   }
   
-/*   public function updatedImages()
-  {
-   $this->imagePreviews = [];
-    foreach ($this->images as $image) {
-      logger()->info('MIME:', [$image->getMimeType()]);
-      $this->imagePreviews[] = 'data:' . $image->getMimeType() . ';base64,' . base64_encode(file_get_contents($image->getRealPath()));
-      //$image->temporaryUrl();
-    }
-  } */
-
-/*   public function updatedVideo()
-  {
-    $this->videoPreview = $this->video->temporaryUrl();
-  } */
-
   public function updatedSelectedMediaType($value)
   {
     if ($value === 'image') {
@@ -188,10 +188,40 @@ class AddEditPost extends Component
     }
   }
 
+  // Método adicional para validar antes de guardar
+  protected function validateMediaRequirements()
+  {
+    if (!empty($this->selectedMediaType)) {
+      if ($this->selectedMediaType === 'image') {
+        // Si está creando un nuevo post o no tiene imágenes existentes
+        if (!$this->postId || empty($this->existingImages)) {
+          if (empty($this->images)) {
+            $this->addError('images', 'Por favor selecciona al menos una imagen.');
+            return false;
+          }
+        }
+      }
+
+      if ($this->selectedMediaType === 'video') {
+        // Si está creando un nuevo post o no tiene video existente
+        if (!$this->postId || !$this->existingVideo) {
+          if (empty($this->video)) {
+            $this->addError('video', 'Por favor selecciona un archivo de video.');
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
+
   public function save()
   {
 
     $this->validate();
+    if (!$this->validateMediaRequirements()) {
+      return;
+    }
 
     if ($this->postId) {
       $post = Post::findOrFail($this->postId);
@@ -224,7 +254,7 @@ class AddEditPost extends Component
     }
 
     $this->dispatch('refreshPosts');
-    $message = $this->postId ? 'Nota actualizado correctamente.' : 'Nota creado correctamente.';
+    $message = $this->postId ? 'Nota actualizada correctamente.' : 'Nota creada correctamente.';
     session()->flash('alert', $message);
     return redirect()->route('admin.posts.index');
   }
@@ -245,12 +275,11 @@ class AddEditPost extends Component
         Storage::disk('public')->delete(str_replace('/storage/', '', $existingImage['url']));
         Media::where('id', $existingImage['id'])->delete();
       }
-     // $this->existingImages = [];
-     // $this->imagePreviews = [];
     }
 
     // Save new images
     if ($this->images) {
+      //dd($this->images);
       foreach ($this->images as $image) {
         $uuid = Uuid::uuid4()->toString();
         $extension = $image->getClientOriginalExtension();
