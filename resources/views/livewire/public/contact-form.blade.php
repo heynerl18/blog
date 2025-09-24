@@ -1,3 +1,4 @@
+@section('title', 'Contacto')
 <section id="contact-section" class="py-5 lg:py-5 px-4 mx-auto max-w-screen-sm">
 
   <h2 class="mb-2 text-3xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">Contáctanos</h2>
@@ -17,7 +18,7 @@
     </div>
   @endif
 
-  <div class="bg-white border border-gray-200 rounded-lg shadow-lg p-8 dark:bg-gray-800 dark:border-gray-700">
+  <div class="bg-white border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm p-8 dark:bg-gray-800 dark:border-gray-700">
     <form wire:submit.prevent="submitForm" class="space-y-8">
       
       <div>
@@ -39,8 +40,8 @@
       </div>
 
       <p class="text-sm text-gray-500 dark:text-gray-400">
-        Al enviar este formulario, aceptas nuestros <a href="#" class="text-blue-700 hover:underline dark:text-blue-500">Términos y Condiciones</a>
-        y nuestra <a href="#" class="text-blue-700 hover:underline dark:text-blue-500">Política de Privacidad</a>,
+        Al enviar este formulario, aceptas nuestros <a href="{{ route('public.terms.conditions') }}" class="text-blue-700 hover:underline dark:text-blue-500">Términos y Condiciones</a>
+        y nuestra <a href="{{ route('public.privacy.policy') }}" class="text-blue-700 hover:underline dark:text-blue-500">Política de Privacidad</a>,
         que explica cómo podemos recopilar, usar y divulgar tu información personal, incluyendo a terceros.
       </p>
 

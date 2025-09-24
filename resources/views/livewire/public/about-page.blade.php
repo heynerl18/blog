@@ -1,14 +1,15 @@
+@section('title', 'Acerca de')
 <div class="container mx-auto px-4 py-12">
-	{{-- <h1 class="text-4xl font-extrabold text-gray-900 dark:text-white mb-8 text-center leading-tight">
+	<!-- <h1 class="text-4xl font-extrabold text-gray-900 dark:text-white mb-8 text-center leading-tight">
 		Acerca de: Talamanca al Día
-	</h1> --}}
+	</h1> -->
 
-		<div class="bg-white dark:bg-gray-800 shadow-xl rounded-lg p-8 md:p-12 mb-12">
+		<div class="bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12 mb-12">
 
-			{{-- Sección: Quién soy y la Misión del Blog --}}
+			<!-- Sección: Quién soy y la Misión del Blog -->
 			<section class="mb-10 border-b border-gray-200 dark:border-gray-700 pb-8">
 					<h2 class="text-3xl font-semibold text-gray-800 dark:text-gray-200 mb-6 flex items-center">
-							<svg class="w-8 h-8 mr-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+							<svg class="w-10 h-10 mr-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
 							¡Hola, Talamanca!
 					</h2>
 					<p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
@@ -17,9 +18,9 @@
 					<p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
 							Con este blog, mi misión es simple: ser la voz de Talamanca, desde Talamanca. Quiero compartir con ustedes las noticias, los eventos y las historias que verdaderamente importan en nuestra comunidad. Creo firmemente que mantenernos informados y conectados nos hace más fuertes, y mi compromiso es reflejar la esencia y el pulso de cada rincón de nuestro cantón.
 					</p>
-					{{-- Biografía del bloguero (descomentada y adaptada) --}}
+					<!-- Biografía del bloguero (descomentada y adaptada) -->
 					<div class="flex flex-col md:flex-row items-center md:items-start mt-8 bg-gray-50 dark:bg-gray-900 p-6 rounded-lg">
-							<img src="https://scontent-gua1-1.xx.fbcdn.net/v/t39.30808-6/485994119_9414254465289898_1898241540994276157_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=W3dftcp4EvMQ7kNvwHydMI1&_nc_oc=AdlTQ2G4o8k44pC7eQBc8mhrhKB4dXZEGHwgi7cbGj4JpIjgyHXmScCBA1QeHQ8c939ISsG702KWECR0JaSV922Y&_nc_zt=23&_nc_ht=scontent-gua1-1.xx&_nc_gid=lVjDD04J-PkoS5Sb21zMTg&oh=00_AfMyh7EmTpkveEc4SD-LBi-4Ixx7Oubjh6e3GxyQaeKhZg&oe=686DD588{{-- {{ asset('images/tu-foto.jpg') }} --}}" alt="Tu Nombre" class="rounded-full w-24 h-24 object-cover shadow-md mb-4 md:mb-0 md:mr-6">
+							<img src="https://scontent-gua1-1.xx.fbcdn.net/v/t39.30808-6/485994119_9414254465289898_1898241540994276157_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=W3dftcp4EvMQ7kNvwHydMI1&_nc_oc=AdlTQ2G4o8k44pC7eQBc8mhrhKB4dXZEGHwgi7cbGj4JpIjgyHXmScCBA1QeHQ8c939ISsG702KWECR0JaSV922Y&_nc_zt=23&_nc_ht=scontent-gua1-1.xx&_nc_gid=lVjDD04J-PkoS5Sb21zMTg&oh=00_AfMyh7EmTpkveEc4SD-LBi-4Ixx7Oubjh6e3GxyQaeKhZg&oe=686DD588" alt="Tu Nombre" class="rounded-full w-24 h-24 object-cover shadow-md mb-4 md:mb-0 md:mr-6">
 							<div>
 									<h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">[Tu Nombre Completo]</h3>
 									<p class="text-gray-600 dark:text-gray-400 text-sm mb-2">Creador y Editor de Talamanca al Día</p>
@@ -30,11 +31,11 @@
 					</div>
 			</section>
 
-			{{-- Sección: Qué encontrarás en Talamanca al Día --}}
+			<!-- Sección: Qué encontrarás en Talamanca al Día -->
 			<section class="mb-10 border-b border-gray-200 dark:border-gray-700 pb-8">
-					<h2 class="text-3xl font-semibold text-gray-800 dark:text-gray-200 mb-6 flex items-center">
-							<svg class="w-8 h-8 mr-3 text-purple-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0113 3.414L16.586 7A2 2 0 0118 8.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 2v6h6V6H6zm3 10V8h5v8H9z" clip-rule="evenodd"></path></svg>
-							Tu Agenda y Noticias de Interés Local
+					<h2 class="text-3xl font-semibold text-gray-800 dark:text-gray-200 mb-6 flex flex-col sm:flex-row items-center sm:items-center">
+							<svg class="w-12 h-12 sm:w-10 sm:h-10 mb-3 sm:mb-0 sm:mr-3 text-purple-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0113 3.414L16.586 7A2 2 0 0118 8.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 2v6h6V6H6zm3 10V8h5v8H9z" clip-rule="evenodd"></path></svg>
+							<span>Tu Agenda y Noticias de Interés Local</span>
 					</h2>
 					<p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
 							En Talamanca al Día, cubro una amplia gama de temas para mantenerte siempre al tanto de lo que sucede a nuestro alrededor, desde la perspectiva de alguien que vive y siente Talamanca:
@@ -49,8 +50,8 @@
 			</section>
 
 			<section class="text-center mt-12 bg-blue-50 dark:bg-blue-950 p-8 rounded-lg shadow-inner">
-					<h2 class="text-3xl font-semibold text-blue-800 dark:text-blue-200 mb-6 flex items-center justify-center">
-							<svg class="w-8 h-8 mr-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"></path></svg>
+					<h2 class="text-3xl font-semibold text-blue-800 dark:text-blue-200 mb-6 flex flex-col sm:flex-row items-center justify-center">
+							<svg class="w-16 h-16 sm:w-16 sm:h-16 mb-3 sm:mb-0 sm:mr-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"></path></svg>
 							¡Conéctate Conmigo y con Nuestra Talamanca!
 					</h2>
 					<p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-8 max-w-2xl mx-auto">

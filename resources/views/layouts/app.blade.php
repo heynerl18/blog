@@ -8,9 +8,6 @@
 
 	<!-- Incluir estilos con Vite -->
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
-	@vite(['resources/js/config/index.js'])
-	
-	<!-- Incluir estilos de Livewire -->
 	@livewireStyles
 </head>
 <body class="bg-gray-50 dark:bg-gray-900">
@@ -29,7 +26,7 @@
 		</div>
 	</div>
   <!-- Incluir scripts de Livewire y Alpine.js -->
-  @livewireScripts
+	@livewireScripts
 	{{-- @livewireVoltScripts --}}
 </body>
 </html>

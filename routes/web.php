@@ -10,9 +10,11 @@ use App\Livewire\Admin\Users\UsersManager;
 use App\Livewire\Public\AboutPage;
 use App\Livewire\Public\ContactForm;
 use App\Livewire\Public\Home;
-use App\Livewire\Public\PostShow;
+use App\Livewire\Public\Post\PostShow;
+use App\Livewire\Public\PrivacyPolicy;
 use App\Livewire\Public\PublicCategoryPosts;
 use App\Livewire\Public\PublicTagPosts;
+use App\Livewire\Public\TermsConditions;
 use Illuminate\Support\Facades\Route;
 
 // ==================================================
@@ -25,6 +27,8 @@ Route::name('public.')->group(function () {
   Route::get('/posts/{post:slug}', PostShow::class)->name('posts.show');
   Route::get('/contact', ContactForm::class)->name('contact');
   Route::get('/about', AboutPage::class)->name('about');
+  Route::get('/terms-and-conditions', TermsConditions::class)->name('terms.conditions');
+  Route::get('/privacy-policy', PrivacyPolicy::class)->name('privacy.policy');
 });
 
 // ==================================================

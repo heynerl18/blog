@@ -14,7 +14,6 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css','resources/js/app.js'])
-
     <script>
       // Apply theme immediately
       (function() {
@@ -43,7 +42,7 @@
       <!-- Theme Toggle Button -->
       <div class="absolute top-4 right-4 z-10">
         <button 
-          @click="toggleTheme()" 
+          @click="toggleTheme()"
           type="button" 
           class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 transition-colors"
           aria-label="Toggle theme"

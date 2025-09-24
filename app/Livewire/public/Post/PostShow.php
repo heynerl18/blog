@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Public;
+namespace App\Livewire\Public\Post;
 
 use App\Models\Post;
 use Livewire\Attributes\Layout;
@@ -18,6 +18,6 @@ class PostShow extends Component
   }
   public function render()
   {
-    return view('livewire.public.post-show');
+    return view('livewire.public.post.post-show');
   }
 }
