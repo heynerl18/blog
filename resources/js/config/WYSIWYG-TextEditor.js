@@ -12,8 +12,7 @@ import { Color } from '@tiptap/extension-color';
 import Bold from '@tiptap/extension-bold';
 
 document.addEventListener('livewire:init', function() {
-    console.log('Livewire inicializado');
-    
+
     Livewire.on('initializeEditor', function(data) {
         console.log('initializeEditor recibido:', data);
 

@@ -22,20 +22,43 @@
     @endphp
 
     @if ($video)
-      <div class="relative w-full rounded-md overflow-hidden shadow mb-6">
-        <video src="{{ asset($video->url) }}" controls class="w-full h-auto max-h-96 object-contain bg-gray-100 dark:bg-gray-800"></video>
+      <div class="relative w-full rounded-md overflow-hidden shadow mb-6 h-56 md:h-96">
+        {{-- Loading skeleton para video --}}
+        <div class="video-skeleton absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse flex items-center justify-center z-10">
+          <svg class="w-16 h-16 text-gray-400 dark:text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/>
+          </svg>
+        </div>
+        <video 
+          src="{{ asset($video->url) }}" 
+          controls 
+          class="w-full h-full object-contain bg-gray-100 dark:bg-gray-800 opacity-0 transition-opacity duration-300"
+          onloadeddata="this.style.opacity='1'; this.previousElementSibling.style.display='none';"
+        ></video>
       </div>
     @elseif ($images->isNotEmpty())
       @if ($images->count() > 1)
         {{-- Carrusel para múltiples imágenes --}}
         <div id="custom-controls-gallery" class="relative w-full rounded-md overflow-hidden shadow mb-6" data-carousel="slide">
+          {{-- Loading skeleton para carrusel --}}
+          <div class="carousel-skeleton absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse flex items-center justify-center z-20">
+            <div class="text-center">
+              <svg class="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
+              </svg>
+              <p class="text-sm text-gray-500 dark:text-gray-400">Cargando imágenes...</p>
+            </div>
+          </div>
+          
           <!-- Carousel wrapper -->
           <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
             @foreach ($images as $index => $img)
               <div class="hidden duration-700 ease-in-out cursor-pointer" data-carousel-item="{{ $index === 0 ? 'active' : '' }}" onclick="openImageModal('{{ asset($img->url) }}', '{{ $post->title }}')">
-                <img src="{{ asset($img->url) }}" 
-                  class="w-full h-full object-cover bg-gray-100 dark:bg-gray-800 absolute block top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hover:opacity-90 transition-opacity" 
+                <img 
+                  src="{{ asset($img->url) }}" 
+                  class="w-full h-full object-cover bg-gray-100 dark:bg-gray-800 absolute block top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hover:opacity-90 transition-opacity opacity-0" 
                   alt="{{ $post->title }}"
+                  onload="this.style.opacity='1'; if({{ $index }} === 0) document.querySelector('.carousel-skeleton').style.display='none';"
                 >
                 <!-- Icono de zoom -->
                 <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black bg-opacity-20">
@@ -67,10 +90,18 @@
       @else
         {{-- Imagen única sin carrusel --}}
         <div class="relative cursor-pointer group" onclick="openImageModal('{{ asset($images->first()->url) }}', '{{ $post->title }}')">
+          {{-- Loading skeleton para imagen única --}}
+          <div class="image-skeleton absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded-md flex items-center justify-center z-10">
+            <svg class="w-16 h-16 text-gray-400 dark:text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          
           <img 
-            class="relative w-full rounded-md overflow-hidden shadow mb-6 h-56 md:h-96 object-cover bg-gray-100 dark:bg-gray-800 hover:opacity-90 transition-opacity" 
+            class="relative w-full rounded-md overflow-hidden shadow mb-6 h-56 md:h-96 object-cover bg-gray-100 dark:bg-gray-800 hover:opacity-90 transition-opacity opacity-0" 
             src="{{ asset($images->first()->url) }}" 
             alt="{{ $post->title }}"
+            onload="this.style.opacity='1'; this.parentElement.querySelector('.image-skeleton').style.display='none';"
           >
           <!-- Icono de zoom -->
           <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black bg-opacity-20 rounded-md">
@@ -81,7 +112,6 @@
         </div>
       @endif
     @endif
-    {{-- FIN: Sección de medios --}}
     <div class="prose prose-lg dark:prose-invert max-w-none text-justify text-gray-500 dark:text-gray-400 animate-fade-in transition-opacity duration-500 ease-out">
       {!! $post->content !!}
     </div>
@@ -137,9 +167,16 @@
 
           <li class="group">
             <a href="{{ route('public.posts.show', $item->slug) }}" class="flex items-center gap-4 hover:bg-blue-100 dark:hover:bg-blue-900 p-2 rounded transition">
-              <div class="w-12 h-12 rounded bg-blue-700 text-white text-sm font-semibold flex items-center justify-center overflow-hidden flex-shrink-0">
+              <div class="w-12 h-12 rounded bg-blue-700 text-white text-sm font-semibold flex items-center justify-center overflow-hidden flex-shrink-0 relative">
                 @if ($image)
-                  <img src="{{ asset($image) }}" alt="{{ $item->title }}" class="w-full h-full object-cover">
+                  {{-- Skeleton para thumbnails del sidebar --}}
+                  <div class="thumbnail-skeleton absolute inset-0 bg-gray-300 dark:bg-gray-600 animate-pulse"></div>
+                  <img 
+                    src="{{ asset($image) }}" 
+                    alt="{{ $item->title }}" 
+                    class="w-full h-full object-cover opacity-0 transition-opacity duration-300 relative z-10"
+                    onload="this.style.opacity='1'; this.previousElementSibling.style.display='none';"
+                  >
                 @elseif ($video)
                   <video src="{{ asset($video) }}" muted preload="metadata" class="w-full h-full object-cover"></video>
                 @else
@@ -157,43 +194,59 @@
   </aside>
 
   <style>
-    /* Añade este CSS a tu hoja de estilos */
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
 
-/* Contenedor responsivo para videos de YouTube */
-.prose iframe[src*="youtube.com"],
-.prose iframe[src*="youtu.be"] {
-    width: 100% !important;
-    height: auto !important;
-    min-height: 315px; /* Altura mínima razonable */
-    aspect-ratio: 16 / 9; /* Mantiene proporción 16:9 */
-    border-radius: 8px; /* Opcional: bordes redondeados */
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); /* Opcional: sombra */
-}
+    .animate-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
 
-/* Alternativa: Wrapper responsivo si prefieres más control */
-.prose .video-wrapper {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-    height: 0;
-    overflow: hidden;
-    border-radius: 8px;
-    margin: 1rem 0;
-}
+    /* Skeleton loaders */
+    .video-skeleton,
+    .carousel-skeleton,
+    .image-skeleton,
+    .thumbnail-skeleton {
+      transition: opacity 0.3s ease-out;
+    }
 
-.prose .video-wrapper iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
-}
-
-/* Para pantallas pequeñas */
-@media (max-width: 640px) {
     .prose iframe[src*="youtube.com"],
     .prose iframe[src*="youtu.be"] {
-        min-height: 200px;
+      width: 100% !important;
+      height: auto !important;
+      min-height: 315px;
+      aspect-ratio: 16 / 9;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
     }
-}
+
+    .prose .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+
+    .prose .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    @media (max-width: 640px) {
+      .prose iframe[src*="youtube.com"],
+      .prose iframe[src*="youtu.be"] {
+        min-height: 200px;
+      }
+    }
   </style>
 </div>

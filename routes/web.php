@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthSocialController;
 use App\Livewire\Admin\Categories\CategoriesManager;
+use App\Livewire\Admin\Comments\CommentsManager;
 use App\Livewire\Admin\Home\AdminHome;
 use App\Livewire\Admin\Posts\PostsManager;
 use App\Livewire\Admin\Roles\RolesManager;
@@ -51,6 +52,7 @@ Route::middleware(['auth', 'verified', 'role:Admin|Blogger'])
     Route::get('/posts', PostsManager::class)->name('posts.index');
     Route::view('/posts/create', 'pages.forms.posts.create')->name('posts.create');
     Route::view('/posts/{postId}/edit', 'pages.forms.posts.edit')->name('posts.edit');
+    Route::get('/comments', CommentsManager::class)->name('comments.index');
     Route::get('/users', UsersManager::class)->middleware('can:users.index')->name('users');
     Route::get('/roles', RolesManager::class)->name('roles');
 });

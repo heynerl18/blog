@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>@yield('title', 'TalaBlog')</title>
   @yield('meta')
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
   @livewireStyles
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 dark:text-white">
@@ -127,8 +128,6 @@
       </button>
     </div>
   </footer>
-
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
   @livewireScripts
 </body>
 </html>

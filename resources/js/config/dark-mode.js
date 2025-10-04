@@ -1,5 +1,3 @@
-// resources/js/config/dark-mode.js
-// Aplicar tema guardado INMEDIATAMENTE (antes de que se renderice la página)
 (function() {
   const savedTheme = localStorage.getItem('color-theme');
   const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;

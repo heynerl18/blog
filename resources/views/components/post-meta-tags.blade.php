@@ -39,8 +39,8 @@
   <meta property="og:image:type" content="image/jpeg">
 @else
   {{-- Imagen por defecto --}}
-  <meta property="og:image" content="{{ url('images/default-share-image.jpg') }}">
-  <meta property="og:image:secure_url" content="{{ secure_url('images/default-share-image.jpg') }}">
+  <meta property="og:image" content="{{ url('images/default-share-image.png') }}">
+  <meta property="og:image:secure_url" content="{{ secure_url('images/default-share-image.png') }}">
   <meta property="og:image:alt" content="{{ config('app.name') }} - {{ $post->title }}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">

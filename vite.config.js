@@ -8,16 +8,9 @@ export default defineConfig({
         'resources/css/app.css',
         'resources/css/home.css',
         'resources/js/app.js',
-        'resources/js/main.js',
+        'resources/js/home.js',
       ],
       refresh: true,
     }),
   ],
-  /*server: {
-    host: '0.0.0.0',
-    port: 5173,
-    hmr: {
-      host: 'http://localhost:8000'
-    }
-  }*/
 });

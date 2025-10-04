@@ -23,15 +23,15 @@ class ImageModal {
     const modalHTML = `
       <div id="imageModal" class="hidden fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center p-4">
         <div class="relative w-full h-full flex items-center justify-center">
-          <button id="closeModalBtn" class="absolute top-4 right-4 text-white hover:text-gray-300 text-2xl font-bold z-10 bg-black bg-opacity-50 rounded-full p-2">
+          <button id="closeModalBtn" class="absolute top-4 right-4 text-white hover:text-gray-300 text-2xl font-bold z-10 bg-gray-800 bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 transition-all duration-200">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
           </button>
           
-          <div class="relative max-w-4xl max-h-[85vh] w-full h-full flex items-center justify-center">
-            <img id="modalImage" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl">
-            <div id="modalTitle" class="absolute -bottom-12 left-0 right-0 bg-black bg-opacity-70 text-white p-3 text-center rounded-lg mx-4"></div>
+          <div class="relative max-w-4xl w-full flex flex-col items-center justify-center px-4 pb-20 md:pb-0">
+            <img id="modalImage" src="" alt="" class="max-w-full max-h-[70vh] md:max-h-[85vh] object-contain rounded-lg shadow-2xl">
+            <div id="modalTitle" class="mt-4 text-white p-4 text-center rounded-lg w-full max-w-2xl font-medium shadow-xl" style="background-color: #1F2937;"></div>
           </div>
         </div>
       </div>

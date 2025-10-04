@@ -1,16 +1,14 @@
 <div>
   <div class="flex gap-3 sm:gap-3 mb-6 flex-wrap">
     {{-- Facebook --}}
-    <a href="{{ $this->facebookUrl }}"
-      target="_blank"
-      rel="noopener noreferrer"
-      onclick="return openShareWindow(this.href, 'facebook')"
+    <button
+      onclick="shareFacebook('{{ $currentUrl }}')"
       class="flex items-center justify-center sm:justify-start gap-0 sm:gap-1 px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition duration-200 shadow-sm w-11 h-11 sm:w-auto sm:h-auto sm:min-w-0 flex-shrink-0">
       <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
         <path d="M22 12a10 10 0 1 0-11.7 9.85v-6.98h-2.6v-2.87h2.6v-2.2c0-2.56 1.52-3.98 3.86-3.98 1.12 0 2.3.2 2.3.2v2.54h-1.3c-1.28 0-1.68.8-1.68 1.6v1.84h2.84l-.45 2.87h-2.39v6.98A10 10 0 0 0 22 12"/>
       </svg>
       <span class="hidden sm:inline">Facebook</span>
-    </a>
+    </button>
 
     {{-- Twitter --}}
     <a href="{{ $this->twitterUrl }}"
@@ -84,33 +82,27 @@
     </div>
   </div>
 
-  {{-- Estilos del componente --}}
   @once
     <style>
-      /* ESTILOS GENERALES */
       .transition {
         transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
-      /* ESTADOS DE FOCUS PARA ACCESIBILIDAD */
       button:focus, a:focus {
         outline: 2px solid rgb(59 130 246);
         outline-offset: 2px;
       }
 
-      /* PREVENIR OVERFLOW EN TEXTOS */
       .truncate {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
 
-      /* MEJORAS DE RENDIMIENTO */
       .share-button {
         will-change: transform;
       }
 
-      /* ESTILOS PARA ADAPTAR EL BOTÓN AL DISEÑO */
       .w-11.h-11 .label {
         display: none !important;
       }
@@ -126,13 +118,36 @@
     </style>
   @endonce
 
-  {{-- JavaScript del componente --}}
   @once
     <script>
-    // Función para ventanas de compartir genéricas
+
+    function shareFacebook(url) {
+      const encodedUrl = encodeURIComponent(url);
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      
+      if (isMobile) {
+        const mobileShareUrl = `https://m.facebook.com/sharer.php?u=${encodedUrl}`;
+        window.location.href = mobileShareUrl;
+      } else {
+        const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+        const width = 626;
+        const height = 436;
+        const left = (screen.width / 2) - (width / 2);
+        const top = (screen.height / 2) - (height / 2);
+        
+        window.open(
+          shareUrl,
+          'facebook-share',
+          `width=${width},height=${height},top=${top},left=${left},toolbar=0,menubar=0,location=0,status=0,scrollbars=1,resizable=1`
+        );
+      }
+      
+      return false;
+    }
+
+    // Función para ventanas de compartir genéricas (Twitter)
     function openShareWindow(url, platform) {
       const windowSpecs = {
-        facebook: 'width=626,height=436',
         twitter: 'width=600,height=400',
         default: 'width=600,height=400'
       };

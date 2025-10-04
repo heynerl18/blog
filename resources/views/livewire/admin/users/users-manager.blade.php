@@ -30,14 +30,15 @@
             </li>
           </ol>
         </nav>
-        <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Todas los usuarios</h1>
+        <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Todos los usuarios</h1>
       </div>
-      <div class="sm:flex">
-        <div class="items-center hidden mb-3 sm:flex sm:divide-x sm:divide-gray-100 sm:mb-0 dark:divide-gray-700">
-          <div class="lg:pr-3">
-            <label for="categories-search" class="sr-only">Buscar</label>
-            <div class="relative mt-1 lg:w-64 xl:w-96">
-              <input type="text" name="search" wire:model.live.debounce.500ms="search" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Buscar usuario">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <!-- Search Section - Visible on all devices -->
+        <div class="flex items-center w-full sm:w-auto sm:divide-x sm:divide-gray-100 dark:divide-gray-700">
+          <div class="lg:pr-3 w-full lg:w-auto">
+            <label for="users-search" class="sr-only">Buscar</label>
+            <div class="relative lg:w-64 xl:w-96">
+              <input type="text" id="users-search" name="search" wire:model.live.debounce.500ms="search" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Buscar usuario">
             </div>
           </div>
         </div>
@@ -75,7 +76,7 @@
                         <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
                         <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path>
                       </svg>
-                      Editar usuario
+                      Editar
                     </button>
                   @else
                     <button type="button" class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" disabled>
