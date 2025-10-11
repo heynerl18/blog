@@ -2,6 +2,7 @@
   <div 
     x-data="{ isModalOpen: @entangle('isModalOpen') }"
     x-show="isModalOpen" 
+    @keydown.escape.window="$wire.closeModal()"
     x-cloak
     class="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
     <div class="relative w-full max-w-2xl p-4">
@@ -17,47 +18,78 @@
             </svg>  
           </button>
         </div>
+        
         <!-- Modal body -->
         <div class="p-6 space-y-6">
-          <form wire:submit.prevent="save">
+          <form wire:submit="save">
             <div class="grid grid-cols-1 gap-6">
               <div>
-                <label for="category-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Rol</label>
-                <!-- Input -->
+                <!-- Nombre del rol -->
+                <label for="role-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Nombre del Rol <span class="text-red-500">*</span>
+                </label>
                 <input 
                   type="text"
-                  wire:model.live="name"
+                  id="role-name"
+                  wire:model="name"
+                  maxlength="10"
                   class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   placeholder="Ingresa el nombre del rol"
                 >
                 @error('name')
                   <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                 @enderror
-                <h3 class="mb-2 mt-2 text-xl font-semibold dark:text-white">Listado de permisos</h3>
-                @foreach($permissions as $permission)
-                  <div class="flex items-start">
-                    <div class="flex items-center h-5">
-                      <input 
-                        type="checkbox" 
-                        name="permissions[]" 
-                        value="{{ $permission->id }}" 
-                        id="role-{{ $permission->id }}"
-                        wire:model="selectedPermissions"
-                        class="mr-1 w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
-                      >
+                
+                <h3 class="mb-3 mt-4 text-lg font-semibold dark:text-white">Permisos (opcional)</h3>
+                
+                <div class="max-h-96 overflow-y-auto space-y-3">
+                  @foreach($permissions as $module => $modulePermissions)
+                    <div class="border-b border-gray-200 dark:border-gray-600 pb-3 last:border-b-0">
+                      <!-- Tittle of modules -->
+                      <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 capitalize">
+                        📁 {{ ucfirst($module) }}
+                      </h4>
+                      
+                      <!-- Permissions of modules -->
+                      <div class="ml-4 space-y-2">
+                        @foreach($modulePermissions as $permission)
+                          <div class="flex items-start">
+                            <div class="flex items-center h-5">
+                              <input 
+                                type="checkbox" 
+                                value="{{ $permission->id }}" 
+                                id="permission-{{ $permission->id }}"
+                                wire:model="selectedPermissions"
+                                class="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
+                              >
+                            </div>
+                            <div class="ml-3 text-sm">
+                              <label for="permission-{{ $permission->id }}" class="font-medium text-gray-900 dark:text-white cursor-pointer">
+                                {{ $permission->description ?? $permission->name }}
+                              </label>
+                            </div>
+                          </div>
+                        @endforeach
+                      </div>
                     </div>
-                    <div class="ml-3 text-sm">
-                      <label for="role-{{ $permission->id }}" class="font-medium text-gray-900 dark:text-white">
-                        {{ $permission->description }}
-                      </label>
-                    </div>
-                  </div>
-                @endforeach
-                <div class="mt-4">
+                  @endforeach
+                </div>
+                
+                <!-- Buttons -->
+                <div class="mt-6 flex justify-end space-x-2">
+                  <button
+                    type="button"
+                    wire:click="closeModal"
+                    class="px-5 py-2.5 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-600 dark:focus:ring-gray-700"
+                  >
+                    Cancelar
+                  </button>
                   <button
                     type="submit"
                     class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                  >{{ $roleId ? 'Editar' : 'Crear' }}</button>
+                  >
+                    {{ $roleId ? 'Actualizar' : 'Crear' }}
+                  </button>
                 </div>
               </div>
             </div>

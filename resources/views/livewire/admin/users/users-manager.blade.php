@@ -99,13 +99,20 @@
 
 @script
 <script>
-  Livewire.on('showAlert', (message) => {
+  Livewire.on('showAlert', (data) => {
+
+    const type = data.type || 'success';
+    const title = type === 'error' ? '¡Error!' : type === 'warning' ? '¡Advertencia!' : '¡Éxito!';
+    
     Swal.fire({
-      icon: 'success',
-      title: '¡Éxito!',
-      text: message.message,
-      timer: 2000,
+      icon: type,
+      title: title,
+      text: data.message,
+      timer: 3000,
       showConfirmButton: false,
+      toast: true,
+      position: 'top-end',
+      timerProgressBar: true,
     });
   });
 </script>

@@ -28,19 +28,26 @@
                     <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                 </svg>
             </button>
-            {{-- SE AGREGÓ 'comments' AL ARRAY PARA MANTENER EL MENÚ ABIERTO --}}
-            <ul id="dropdown-crud" class="space-y-2 py-2 {{ !in_array($page_slug, ['products', 'categories', 'tags', 'posts', 'users', 'roles', 'comments']) ? 'hidden' : '' }}">
+            <ul id="dropdown-crud" class="space-y-2 py-2 {{ !in_array($page_slug, ['categories', 'tags', 'posts', 'users', 'roles', 'comments']) ? 'hidden' : '' }}">
               <li>
-                <a href="{{ route('admin.categories') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'categories' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Categorías</a>
+                @can('categories.index')
+                  <a href="{{ route('admin.categories') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'categories' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Categorías</a>
+                @endcan
               </li>
               <li>
-                <a href="{{ route('admin.tags') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'tags' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Etiquetas</a>
+                @can('tags.index')
+                  <a href="{{ route('admin.tags') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'tags' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Etiquetas</a>
+                @endcan
               </li>
               <li>
-                <a href="{{ route('admin.posts.index') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'posts' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Notas</a>
+                @can('posts.index') 
+                  <a href="{{ route('admin.posts.index') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'posts' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Notas</a>
+                @endcan
               </li>
               <li>
-                <a href="{{ route('admin.comments.index') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'comments' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Comentarios</a>
+                @can('comments.index')
+                  <a href="{{ route('admin.comments.index') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'comments' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Comentarios</a>
+                @endcan
               </li>
               <li>
                 @can('users.index')
@@ -48,7 +55,9 @@
                 @endcan
               </li>
               <li>
-                <a href="{{ route('admin.roles') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'roles' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Roles</a>
+                @can('roles.index')
+                  <a href="{{ route('admin.roles') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2 group hover:bg-gray-100 transition duration-75 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ $page_slug === 'roles' ? 'bg-gray-100 dark:bg-gray-700' : '' }}">Roles</a>
+                @endcan
               </li>
             </ul>
           </li>

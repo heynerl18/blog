@@ -43,18 +43,45 @@ Route::prefix('auth')->group(function () {
 // ==================================================
 // Backend Routes (Protected by Authentication)
 // ==================================================
-Route::middleware(['auth', 'verified', 'role:Admin|Blogger'])
+Route::middleware(['auth', 'verified'])
   ->prefix('dashboard')->name('admin.')
   ->group(function () {
-    Route::get('/', AdminHome::class)->name('dashboard');
-    Route::get('/categories', CategoriesManager::class)->name('categories');
-    Route::get('/tags', TagsManager::class)->name('tags');
-    Route::get('/posts', PostsManager::class)->name('posts.index');
-    Route::view('/posts/create', 'pages.forms.posts.create')->name('posts.create');
-    Route::view('/posts/{postId}/edit', 'pages.forms.posts.edit')->name('posts.edit');
-    Route::get('/comments', CommentsManager::class)->name('comments.index');
-    Route::get('/users', UsersManager::class)->middleware('can:users.index')->name('users');
-    Route::get('/roles', RolesManager::class)->name('roles');
+
+    Route::get('/', AdminHome::class)
+      ->middleware('permission:dashboard')
+      ->name('dashboard');
+
+    Route::get('/categories', CategoriesManager::class)
+      ->middleware('permission:categories.index')
+      ->name('categories');
+
+    Route::get('/tags', TagsManager::class)
+      ->middleware('permission:tags.index')
+      ->name('tags');
+
+    Route::get('/posts', PostsManager::class)
+      ->middleware('permission:posts.index')
+      ->name('posts.index');
+
+    Route::view('/posts/create', 'pages.forms.posts.create')
+      ->middleware('permission:posts.create')
+      ->name('posts.create');
+
+    Route::view('/posts/{postId}/edit', 'pages.forms.posts.edit')
+      ->middleware('permission:posts.edit')
+      ->name('posts.edit');
+
+    Route::get('/comments', CommentsManager::class)
+      ->middleware('permission:comments.index')
+      ->name('comments.index');
+
+    Route::get('/users', UsersManager::class)
+      ->middleware('permission:users.index')
+      ->name('users');
+
+    Route::get('/roles', RolesManager::class)
+      ->middleware('permission:roles.index')
+      ->name('roles');
 });
 
 require __DIR__ . '/auth.php';

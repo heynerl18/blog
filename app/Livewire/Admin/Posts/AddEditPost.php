@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Media;
 use App\Models\Post;
 use App\Models\Tag;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
@@ -16,6 +17,7 @@ use Ramsey\Uuid\Uuid;
 class AddEditPost extends Component
 {
   use WithFileUploads;
+  use AuthorizesRequests;
 
   public $postId;
   public $title = '';
@@ -116,7 +118,15 @@ class AddEditPost extends Component
     $this->postId = $postId;
 
     if($postId){
-      $post = Post::with(['user', 'category', 'media', 'tags'])->find($postId);
+
+      $this->authorize('posts.edit');
+
+      $post = Post::with(['user', 'category', 'media', 'tags'])->findOrFail($postId);
+
+      if(!auth()->user()->hasRole('Admin') && $post->user_id !== auth()->id()){
+        abort(403, 'No tienes permiso para editar este post.');
+      }
+
       $this->title = $post->title;
       $this->category_id = $post->category_id;
       $this->selectedTags = $post->tags()->pluck('tag_id')->toArray();
@@ -148,6 +158,8 @@ class AddEditPost extends Component
         $this->videoPreview = $video->url;
         $this->existingVideo = $video;
       }
+    } else {
+      $this->authorize('posts.create');
     }
     $this->dispatch('initializeEditor', content: $this->content);
   }
@@ -219,19 +231,35 @@ class AddEditPost extends Component
   {
 
     $this->validate();
+
     if (!$this->validateMediaRequirements()) {
       return;
     }
 
     if ($this->postId) {
+
+      $this->authorize('posts.edit');
+
       $post = Post::findOrFail($this->postId);
+
+      if (!auth()->user()->hasRole('Admin') && $post->user_id !== auth()->id()) {
+        session()->flash('alert', 'No tienes permiso para editar este post.');
+        return redirect()->route('admin.posts.index');
+      }
+
       $post->update([
         'title' => $this->title,
         'category_id' => $this->category_id,
         'content' => $this->content,
         'status' => $this->postStatus,
       ]);
+
+      $message = 'Nota actualizada correctamente.';
+
     }else {
+
+      $this->authorize('posts.create');
+
       $post = Post::create([
         'title' => $this->title,
         'category_id' => $this->category_id,
@@ -239,6 +267,8 @@ class AddEditPost extends Component
         'status' => $this->postStatus,
         'user_id' => Auth::id(),
       ]);
+
+      $message = 'Nota creada correctamente.';
     }
 
     if (!empty($this->selectedTags)) {
@@ -254,7 +284,6 @@ class AddEditPost extends Component
     }
 
     $this->dispatch('refreshPosts');
-    $message = $this->postId ? 'Nota actualizada correctamente.' : 'Nota creada correctamente.';
     session()->flash('alert', $message);
     return redirect()->route('admin.posts.index');
   }
@@ -345,6 +374,7 @@ class AddEditPost extends Component
       'existingVideo',
       'existingImages'
     ]);
+    $this->resetValidation();
   }
 
   public function render()

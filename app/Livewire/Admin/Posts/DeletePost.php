@@ -3,18 +3,23 @@
 namespace App\Livewire\Admin\Posts;
 
 use App\Models\Post;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Storage;
 
 class DeletePost extends Component
 {
+  use AuthorizesRequests;
+
   public $postId;
   public $isModalOpen = false;
 
   #[On('openModalDelete')]
   public function openModalDelete($postId)
   {
+    $this->authorize('posts.destroy');
+
     $this->postId = $postId;
     $this->isModalOpen = true;
   }
@@ -23,23 +28,33 @@ class DeletePost extends Component
 	public function closeModal()
 	{
 		$this->isModalOpen = false;
+    $this->reset(['postId']);
 	}
 
   public function delete()
   {
-    $post = Post::find($this->postId);
-    if ($post) {
-      // Delete multimedia files associated with the post
-      $this->deletePostMedia($post);
-      $post->delete();
-      $this->dispatch('refreshPosts');
-      $message = 'Nota eliminado correctamente.';
-    } else {
-      $message = 'La nota no existe o ya fue eliminado.';
+    $this->authorize('posts.destroy');
+
+    $post = Post::findOrFail($this->postId);
+
+    if (!auth()->user()->hasRole('Admin') && $post->user_id !== auth()->id()) {
+      $this->dispatch('showAlert', [
+        'message' => 'No tienes permiso para eliminar este post.',
+        'type' => 'error'
+      ]);
+      $this->closeModal();
+      return;
     }
 
+    $this->deletePostMedia($post);
+    $post->delete();
+
     $this->closeModal();
-    $this->dispatch('showAlert', message : $message);
+    $this->dispatch('refreshPosts');
+    $this->dispatch('showAlert', [
+      'message' => 'Nota eliminada correctamente.',
+      'type' => 'success'
+    ]);
   }
 
   protected function deletePostMedia($post)

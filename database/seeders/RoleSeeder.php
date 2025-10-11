@@ -35,5 +35,15 @@ class RoleSeeder extends Seeder
     Permission::create(['name' => 'posts.create', 'description' => 'Crear posts'])->syncRoles([$role1, $role2]);
     Permission::create(['name' => 'posts.edit', 'description' => 'Editar posts'])->syncRoles([$role1, $role2]);
     Permission::create(['name' => 'posts.destroy', 'description' => 'Eliminar posts'])->syncRoles([$role1, $role2]);
+    Permission::create(['name' => 'posts.share', 'description' => 'Compartir post en facebook'])->syncRoles([$role1, $role2]);
+
+    Permission::create(['name' => 'comments.index', 'description' => 'Ver listado de comentarios'])->syncRoles([$role1, $role2]);
+    Permission::create(['name' => 'comments.approve', 'description' => 'Aprobar comentarios'])->syncRoles([$role1]);
+    Permission::create(['name' => 'comments.destroy', 'description' => 'Eliminar comentarios'])->syncRoles([$role1]);
+
+    Permission::create(['name' => 'roles.index', 'description' => 'Ver listado de roles'])->syncRoles([$role1]);
+    Permission::create(['name' => 'roles.create', 'description' => 'Crear roles'])->syncRoles([$role1]);
+    Permission::create(['name' => 'roles.edit', 'description' => 'Editar roles y permisos'])->syncRoles([$role1]);
+    Permission::create(['name' => 'roles.destroy', 'description' => 'Eliminar roles'])->syncRoles([$role1]);
   }
 }

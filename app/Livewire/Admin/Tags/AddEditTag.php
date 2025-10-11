@@ -3,12 +3,15 @@
 namespace App\Livewire\Admin\Tags;
 
 use App\Models\Tag;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 
 class AddEditTag extends Component
 {
+  use AuthorizesRequests;
+
   public $isOpen = false;
   public $tagId = null;
   #[Validate]
@@ -27,11 +30,17 @@ class AddEditTag extends Component
   #[On('openModal')]
   public function openModal($tagId = null)
   {
+    if($tagId){
+      $this->authorize('tags.edit');
+    } else {
+      $this->authorize('tags.create');
+    }
+
     $this->resetForm();
     $this->tagId = $tagId;
 
     if ($tagId) {
-      $tag = Tag::find($tagId);
+      $tag = Tag::findOrFail($tagId);
       $this->name = $tag->name;
     }
 
@@ -41,9 +50,9 @@ class AddEditTag extends Component
   #[On('closeModal')]
   public function closeModal()
   {
+    $this->isOpen = false;
     $this->resetForm();
     $this->resetValidation();
-    $this->isOpen = false;
   }
 
   public function save()
@@ -51,12 +60,18 @@ class AddEditTag extends Component
     $this->validate();
 
     if ($this->tagId) {
-      $tag = Tag::find($this->tagId);
+
+      $this->authorize('tags.edit');
+
+      $tag = Tag::findOrFail($this->tagId);
       $tag->update([
         'name' => $this->name
       ]);
       $message = 'Etiqueta actualizada correctamente.';
     } else {
+
+      $this->authorize('tags.create');
+
       Tag::create([
         'name' => $this->name
       ]);
@@ -65,12 +80,13 @@ class AddEditTag extends Component
 
     $this->closeModal();
     $this->dispatch('refreshTags');
-    $this->dispatch('showAlert', message: $message);
+    $this->dispatch('showAlert', message: $message, type: 'success');
   }
 
   public function resetForm()
   {
     $this->reset(['tagId', 'name']);
+    $this->resetValidation();
   }
 
   public function render()

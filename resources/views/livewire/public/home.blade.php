@@ -115,7 +115,6 @@
                     {{ $post->title }}
                   </h5>
                     
-                  {{-- Metadatos: fecha y categoría --}}
                   <div class="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2 flex-wrap mb-4">
                     <span class="flex items-center gap-1">
                       📅 {{ $post->created_at->format('d M, Y') }}
@@ -127,7 +126,6 @@
                     @endif
                   </div>
 
-                  {{-- Botón Flowbite separado --}}
                   <div class="flex justify-start">
                     <a href="{{ route('public.posts.show', $post->slug) }}">
                       <button type="button" class="text-blue-600 dark:text-blue-400 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 inline-flex items-center transition-all duration-200 hover:shadow-sm hover:-translate-y-0.5">
@@ -140,7 +138,6 @@
                   </div>
                 </div>
               </div>
-            {{-- Posts con imagen - Card estilo Unsplash --}}
             @elseif($image)
               <div class="group relative break-inside-avoid mb-8 overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-[1.01] image-hover-effect">
                 <a href="{{ route('public.posts.show', $post->slug) }}" class="block">
@@ -150,17 +147,14 @@
                     loading="lazy"
                   />
                     
-                  {{-- Overlay con gradiente mejorado --}}
                   <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
                   
-                  {{-- Título centrado y botón abajo a la derecha estilo Unsplash --}}
                   <div class="absolute inset-0 flex flex-col justify-between p-4 z-10">
-                    {{-- Título centrado con sombra estilo Unsplash --}}
+
                     <div class="flex-1 flex items-center justify-center">
                       <h5 class="text-white text-xl font-bold line-clamp-2 image-text-shadow text-center transform group-hover:scale-105 transition-transform duration-300">{{ $post->title }}</h5>
                     </div>
                     
-                    {{-- Botón estilo Unsplash abajo a la derecha --}}
                     <div class="flex justify-end">
                       <button type="button" class="unsplash-button inline-flex items-center">
                         Leer más
@@ -177,19 +171,16 @@
           @else
             <div class="group break-inside-avoid mb-8 overflow-hidden text-card-gradient cursor-pointer transform transition-all duration-300 hover:scale-[1.01] text-card-hover">
               <a href="{{ route('public.posts.show', $post->slug) }}" class="block p-6 h-full text-white relative z-10">
-                {{-- Ícono de documento con animación --}}
                 <div class="flex items-center justify-center w-12 h-12 bg-white/20 backdrop-blur-sm rounded-lg mb-4 icon-bounce">
                   <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 </div>
-                  
-                {{-- Título principal --}}
+            
                 <h5 class="text-white text-lg font-bold mb-4 line-clamp-2 group-hover:text-white/90 transition-colors duration-300">
                   {{ $post->title }}
                 </h5>
                   
-                {{-- Metadatos con iconos mejorados --}}
                 <div class="text-sm text-white/80 flex items-center gap-3 mb-4">
                   <span class="flex items-center gap-1 bg-white/10 rounded-full px-2 py-1">
                     📅 {{ $post->created_at->format('d M, Y') }}
@@ -201,14 +192,12 @@
                   @endif
                 </div>
 
-                {{-- Extracto del post (opcional) --}}
                 @if($post->excerpt)
                   <p class="text-sm text-white/90 line-clamp-3 leading-relaxed mb-4">
                     {{ Str::limit($post->excerpt, 120) }}
                   </p>
                 @endif
 
-                {{-- Botón con estilo consistente --}}
                 <div class="flex justify-start">
                   <button type="button" class="bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white/30 focus:outline-none focus:ring-4 focus:ring-white/20 font-medium rounded-lg text-sm px-3 py-1.5 inline-flex items-center transition-all duration-200 hover:shadow-sm hover:-translate-y-0.5">
                     Leer más

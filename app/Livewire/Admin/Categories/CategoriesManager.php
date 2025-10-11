@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Categories;
 
 use App\Models\Category;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On; 
@@ -12,6 +13,7 @@ use Livewire\Attributes\Layout;
 class CategoriesManager extends Component
 {
   use WithPagination;
+  use AuthorizesRequests;
 
   public $perPage = 5;
   public $search = '';
@@ -25,6 +27,7 @@ class CategoriesManager extends Component
   public function mount()
   {
     // $this->perPage = 10;
+    $this->authorize('categories.index');
   }
 
   #[On('refreshCategories')]
@@ -36,6 +39,7 @@ class CategoriesManager extends Component
   public function render()
   {
     $categories = Category::where('name', 'like', "%{$this->search}%")
+      ->orWhere('slug', 'like', "%{$this->search}%")
       ->paginate($this->perPage);
     return view('livewire.admin.categories.categories-manager', ['categories' => $categories]);
   }

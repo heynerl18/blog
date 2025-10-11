@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Users;
 
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
 use Livewire\Attributes\On;
@@ -11,36 +12,33 @@ use Spatie\Permission\PermissionRegistrar;
 
 class EditUser extends Component
 {
+  use AuthorizesRequests;
+
   public $userId;
   public $isModalOpen = false;
-  #[Validate]
+
   #[Validate('required', message: 'El nombre es requerido.')]
   public $name = '';
-  public $selectedRoles = [];
 
-  private function checkEditPermission()
-  {
-    if (!auth()->user()->can('users.edit')) {
-      session()->flash('error', 'No tienes permiso para editar usuarios.');
-      $this->closeModal();
-      return false;
-    }
-    return true;
-  }
+  public $selectedRoles = [];
 
   #[On('openModal')]
   public function openModal($userId)
   {
-    if (!$this->checkEditPermission()) {
-      return;
-    }
-
+    $this->authorize('users.edit'); 
+    
     $this->resetForm();
     $this->userId = $userId;
 
     if ($userId) {
       // edit mode
       $user = User::with('roles')->find($userId);
+      // prevent editing own role
+      if($user->id === auth()->id()){
+        $this->dispatch('showAlert', message: 'No puedes modificar tu propio rol', type: 'error');
+        return;
+      }
+
       $this->name = $user->name;
       // load roles
       $this->selectedRoles = $user->roles->pluck('id')->toArray();
@@ -57,26 +55,36 @@ class EditUser extends Component
 
   public function save()
   {
-    if (!$this->checkEditPermission()) {
-      return;
-    }
+    $this->authorize('users.edit');
+    $this->validate();
     
     if ($this->userId) {
-      $user = User::find($this->userId);
+      // update mode
+      $user = User::findOrFail($this->userId);
+      // prevent editing own role
+      if($user->id === auth()->id()){
+        $this->dispatch('showAlert', message: 'No puedes modificar tu propio rol.', type: 'error');
+        $this->closeModal();
+        return;
+      }
       $user->roles()->sync($this->selectedRoles);
-      $message = 'Se asignó los roles correctamente.';
+
+      $message = empty($this->selectedRoles) 
+      ? "Se quitaron todos los roles de {$user->name}."
+      : 'Se asignó los roles correctamente.';
     }
 
     app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
 
     $this->closeModal();
     $this->dispatch('refreshUsers');
-    $this->dispatch('showAlert', message: $message);
+    $this->dispatch('showAlert', message: $message, type: 'success');
   }
 
   public function resetForm()
   {
     $this->reset(['userId', 'name', 'selectedRoles']);
+    $this->resetValidation();
   }
 
   public function render()

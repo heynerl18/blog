@@ -3,11 +3,14 @@
 namespace App\Livewire\Admin\Categories;
 
 use App\Models\Category;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Livewire\Attributes\On;
 
 class AddEditCategory extends Component
 {
+  use AuthorizesRequests;
+
   public $categoryId;
   public $isModalOpen = false;
   public $name;
@@ -25,11 +28,17 @@ class AddEditCategory extends Component
   #[On('openModal')]
   public function openModal($categoryId = null)
   {
+    if($categoryId){
+      $this->authorize('categories.edit');
+    } else {
+      $this->authorize('categories.create');
+    }
+    
     $this->resetForm();
     $this->categoryId = $categoryId;
 
     if ($categoryId) {
-      $category = Category::find($categoryId);
+      $category = Category::findOrFail($categoryId);
       $this->name = $category->name;
     }
 
@@ -41,6 +50,7 @@ class AddEditCategory extends Component
   {
     $this->isModalOpen = false;
     $this->resetForm();
+    $this->resetValidation();
   }
 
   public function save()
@@ -48,12 +58,18 @@ class AddEditCategory extends Component
     $this->validate();
 
     if ($this->categoryId) {
-      $category = Category::find($this->categoryId);
+
+      $this->authorize('categories.edit');
+
+      $category = Category::findOrFail($this->categoryId);
       $category->update([
         'name' => $this->name,
       ]);
       $message = 'Categoría actualizada correctamente.';
     } else {
+
+      $this->authorize('categories.create');
+
       Category::create([
         'name' => $this->name,
       ]);
@@ -62,12 +78,13 @@ class AddEditCategory extends Component
 
     $this->closeModal();
     $this->dispatch('refreshCategories');
-    $this->dispatch('showAlert', message: $message);
+    $this->dispatch('showAlert', message: $message, type: 'success');
   }
 
   public function resetForm()
   {
     $this->reset(['categoryId', 'name']);
+    $this->resetValidation();
   }
 
   public function render()

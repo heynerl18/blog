@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Tags;
 
 use App\Models\Tag;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On; 
@@ -12,6 +13,7 @@ use Livewire\Attributes\Layout;
 class TagsManager extends Component
 {
   use WithPagination;
+  use AuthorizesRequests;
 
   public $perPage = 5;
   public $search = '';
@@ -25,6 +27,7 @@ class TagsManager extends Component
   public function mount()
   {
     //$this->perPage = 10;
+    $this->authorize('tags.index');
   }
 
   #[On('refreshTags')]
@@ -36,6 +39,7 @@ class TagsManager extends Component
   public function render()
   {
     $tags = Tag::where('name', 'like', "%{$this->search}%")
+      ->orWhere('slug', 'like', "%{$this->search}%")
       ->paginate($this->perPage);
 
     return view('livewire.admin.tags.tags-manager', [

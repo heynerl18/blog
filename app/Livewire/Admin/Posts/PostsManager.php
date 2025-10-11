@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Posts;
 
 use App\Models\Post;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
@@ -12,6 +13,7 @@ use Livewire\Attributes\Layout;
 class PostsManager extends Component
 {
   use WithPagination;
+  use AuthorizesRequests;
 
   public $perPage = 5;
   protected $listeners = ['pageChanged' => 'updatePage'];
@@ -25,6 +27,7 @@ class PostsManager extends Component
   public function mount()
   {
     // $this->perPage = 10;
+    $this->authorize('posts.index');
   }
 
   #[On('refreshPosts')]
