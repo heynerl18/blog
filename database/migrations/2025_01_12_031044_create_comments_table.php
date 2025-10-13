@@ -19,6 +19,13 @@ return new class extends Migration
 			$table->foreignId('parent_id')->nullable()->constrained('comments')->onDelete('cascade');
 			$table->unsignedInteger('likes_count')->default(0);
 			$table->unsignedInteger('dislikes_count')->default(0);
+			
+			// fields for moderation
+			$table->enum('status', ['pending', 'approved', 'rejected'])->default('approved');
+			$table->text('moderation_reason')->nullable();
+			$table->foreignId('moderated_by')->nullable()->constrained('users')->nullOnDelete();
+			$table->timestamp('moderated_at')->nullable();
+
 			$table->timestamps();
 
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

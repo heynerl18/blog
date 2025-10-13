@@ -39,7 +39,9 @@ class RoleSeeder extends Seeder
 
     Permission::create(['name' => 'comments.index', 'description' => 'Ver listado de comentarios'])->syncRoles([$role1, $role2]);
     Permission::create(['name' => 'comments.approve', 'description' => 'Aprobar comentarios'])->syncRoles([$role1]);
+    Permission::create(['name' => 'comments.view', 'description' => 'Ver comentarios'])->syncRoles([$role1, $role2]);
     Permission::create(['name' => 'comments.destroy', 'description' => 'Eliminar comentarios'])->syncRoles([$role1]);
+    Permission::create(['name' => 'comments.moderate', 'description' => 'Habilitar o deshabilitar comentarios'])->syncRoles([$role1, $role2]);
 
     Permission::create(['name' => 'roles.index', 'description' => 'Ver listado de roles'])->syncRoles([$role1]);
     Permission::create(['name' => 'roles.create', 'description' => 'Crear roles'])->syncRoles([$role1]);

@@ -47,7 +47,7 @@
                     <div class="border-b border-gray-200 dark:border-gray-600 pb-3 last:border-b-0">
                       <!-- Tittle of modules -->
                       <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 capitalize">
-                        📁 {{ ucfirst($module) }}
+                        📁 {{ __('modules.'. $module) }}
                       </h4>
                       
                       <!-- Permissions of modules -->

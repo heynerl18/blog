@@ -17,6 +17,14 @@ class Comment extends Model
     'parent_id',
     'likes_count',
     'dislikes_count',
+    'status',
+    'moderation_reason',
+    'moderated_by',
+    'moderated_at'
+  ];
+
+  protected $casts = [
+    'moderated_at' => 'datetime',
   ];
 
   public function user()
@@ -49,7 +57,7 @@ class Comment extends Model
   public function isLikedByUser(?User $user) // Accept null for unauthenticated users
   {
     if (!$user) {
-      return false; // If the user is not authenticated, they cannot like the comment.
+      return false;
     }
     // Check if the user has liked the comment
     return $this->likes()->where('user_id', $user->id)->where('is_like', true)->exists();
@@ -58,10 +66,31 @@ class Comment extends Model
   public function isDislikedByUser(?User $user) // Accept null for unauthenticated users
   {
     if (!$user) {
-      return false; // If the user is not authenticated, they cannot dislike the comment.
+      return false;
     }
     // Check if the user has disliked the comment
     return $this->likes()->where('user_id', $user->id)->where('is_like', false)->exists();
+  }
+
+  public function moderatedBy()
+  {
+    return $this->belongsTo(User::class, 'moderated_by');
+  }
+
+  // Scopes
+  public function scopeApproved($query)
+  {
+    return $query->where('status', 'approved');
+  }
+
+  public function scopePending($query)
+  {
+    return $query->where('status', 'pending');
+  }
+
+  public function scopeRejected($query)
+  {
+    return $query->where('status', 'rejected');
   }
 
 }

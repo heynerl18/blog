@@ -132,7 +132,7 @@ class AddEditRole extends Component
     $this->reset(['roleId', 'name', 'selectedPermissions']);
     $this->resetValidation();
   }
-
+  
   public function render()
   {
     $permissions = Permission::all()->groupBy(function ($permission){
