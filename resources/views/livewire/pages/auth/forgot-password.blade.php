@@ -45,9 +45,9 @@ new #[Layout('layouts.guest')] class extends Component
 }; ?>
 
 <div class="flex flex-col items-center justify-center px-6 pt-8 mx-auto md:h-screen pt:mt-0 dark:bg-gray-900">
-  <a href="{{ url('/') }}" class="flex items-center justify-center mb-8 text-2xl font-semibold lg:mb-10 dark:text-white">
+  {{-- <a href="{{ url('/') }}" class="flex items-center justify-center mb-8 text-2xl font-semibold lg:mb-10 dark:text-white">
     <img src="{{ asset('images/logo.png') }}" class="mr-4 h-20" alt="logo">
-  </a>
+  </a> --}}
   <!-- Card -->
   <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800">
     <div class="w-full p-6 sm:p-8">

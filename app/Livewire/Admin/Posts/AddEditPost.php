@@ -49,34 +49,42 @@ class AddEditPost extends Component
       'content' => 'required',
     ];
 
-    // Si se selecciona un tipo de media, entonces es requerido subir el archivo correspondiente
     if (!empty($this->selectedMediaType)) {
       $rules['selectedMediaType'] = ['required', 'in:image,video'];
 
       if ($this->selectedMediaType === 'image') {
-        // Si selecciona imagen, debe subir imágenes (excepto si está editando y ya tiene imágenes existentes)
-        if (!$this->postId || empty($this->existingImages)) {
+
+        $needsImages = !$this->postId || empty($this->existingImages);
+        
+        if ($needsImages) {
+          // Modo creación o edición sin imágenes existentes
           $rules['images'] = ['required', 'array', 'min:1', 'max:4'];
+          $rules['images.*'] = ['required', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'];
         } else {
+          // Modo edición con imágenes existentes - las nuevas son opcionales
           $rules['images'] = ['nullable', 'array', 'max:4'];
+          $rules['images.*'] = ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'];
         }
-        $rules['images.*'] = ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'];
       }
 
       if ($this->selectedMediaType === 'video') {
-        // Si selecciona video, debe subir video (excepto si está editando y ya tiene video existente)
-        if (!$this->postId || !$this->existingVideo) {
-          $rules['video'] = ['required', 'mimes:mp4', 'max:10240'];
+
+        $needsVideo = !$this->postId || !$this->existingVideo;
+        
+        if ($needsVideo) {
+          // Modo creación o edición sin video existente
+          $rules['video'] = ['required', 'file', 'mimes:mp4', 'max:10240'];
         } else {
-          $rules['video'] = ['nullable', 'mimes:mp4', 'max:10240'];
+          // Modo edición con video existente - el nuevo es opcional
+          $rules['video'] = ['nullable', 'file', 'mimes:mp4', 'max:10240'];
         }
       }
     } else {
-      // Si no se selecciona tipo de media, los campos son opcionales
+      // Sin tipo de medio seleccionado - todo es opcional
       $rules['selectedMediaType'] = ['nullable', 'in:image,video'];
       $rules['images'] = ['nullable', 'array', 'max:4'];
-      $rules['images.*'] = ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'];
-      $rules['video'] = ['nullable', 'mimes:mp4', 'max:10240'];
+      $rules['images.*'] = ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'];
+      $rules['video'] = ['nullable', 'file', 'mimes:mp4', 'max:10240'];
     }
 
     return $rules;
@@ -103,10 +111,12 @@ class AddEditPost extends Component
       'images.array' => 'Las imágenes deben ser un arreglo de archivos.',
       'images.min' => 'Debes seleccionar al menos una imagen.',
       'images.max' => 'Puedes subir un máximo de 4 imágenes.',
+      'images.*.required' => 'Cada archivo de imagen es requerido.',
       'images.*.image' => 'Cada archivo debe ser una imagen válida.',
-      'images.*.mimes' => 'Las imágenes deben ser archivos JPG, JPEG o PNG.',
+      'images.*.mimes' => 'Las imágenes deben ser archivos JPG, JPEG, PNG o WEBP.',
       'images.*.max' => 'Cada imagen no debe superar los 2 MB.',
       'video.required' => 'Por favor selecciona un archivo de video.',
+      'video.file' => 'El video debe ser un archivo válido.',
       'video.mimes' => 'El archivo debe ser un video en formato MP4.',
       'video.max' => 'El video no debe superar los 10 MB.',
     ];
@@ -133,16 +143,20 @@ class AddEditPost extends Component
       $this->postStatus = $post->status === self::POST_PUBLISHED;
       $this->content = $post->content;
       
-      // Load previews of existing images and video
       $this->media = $post->media()->get();
 
-      $hasImages = $this->media->whereIn('file_type', ['image/png', 'image/jpeg', 'image/jpg'])->isNotEmpty();
-      $hasVideo = $this->media->where('file_type', 'video/mp4')->isNotEmpty();
+      // Verificar imágenes con más flexibilidad en MIME types
+      $imageTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+      $hasImages = $this->media->whereIn('file_type', $imageTypes)->isNotEmpty();
+      
+      // Verificar videos con más flexibilidad
+      $videoTypes = ['video/mp4'];
+      $hasVideo = $this->media->whereIn('file_type', $videoTypes)->isNotEmpty();
 
       if ($hasImages) {
         $this->selectedMediaType = 'image';
         $this->existingImages = $this->media
-          ->whereIn('file_type', ['image/png', 'image/jpeg', 'image/jpg'])
+          ->whereIn('file_type', $imageTypes)
           ->map(function ($image) {
             return [
               'id' => $image['id'],
@@ -154,7 +168,7 @@ class AddEditPost extends Component
         $this->imagePreviews = array_column($this->existingImages, 'url');
       } elseif ($hasVideo) {
         $this->selectedMediaType = 'video';
-        $video = $this->media->where('file_type', 'video/mp4')->first();
+        $video = $this->media->whereIn('file_type', $videoTypes)->first();
         $this->videoPreview = $video->url;
         $this->existingVideo = $video;
       }
@@ -177,64 +191,20 @@ class AddEditPost extends Component
   
   public function updatedSelectedMediaType($value)
   {
+    // Limpiar archivos y vistas previas del otro tipo
     if ($value === 'image') {
-      // If you change to "image", delete the existing video if there is any
-      if ($this->existingVideo) {
-        Storage::disk('public')->delete(str_replace('/storage/', '', $this->existingVideo->url));
-        Media::where('id', $this->existingVideo->id)->delete();
-      }
-      $this->existingVideo = null;
       $this->video = null;
       $this->videoPreview = null;
     } elseif ($value === 'video') {
-      // If you switch to "video", delete existing images if any
-      if ($this->existingImages) {
-        foreach ($this->existingImages as $existingImage) {
-          Storage::disk('public')->delete(str_replace('/storage/', '', $existingImage['url']));
-          Media::where('id', $existingImage['id'])->delete();
-        }
-      }
-      $this->existingImages = [];
       $this->images = [];
       $this->imagePreviews = [];
     }
-  }
-
-  // Método adicional para validar antes de guardar
-  protected function validateMediaRequirements()
-  {
-    if (!empty($this->selectedMediaType)) {
-      if ($this->selectedMediaType === 'image') {
-        // Si está creando un nuevo post o no tiene imágenes existentes
-        if (!$this->postId || empty($this->existingImages)) {
-          if (empty($this->images)) {
-            $this->addError('images', 'Por favor selecciona al menos una imagen.');
-            return false;
-          }
-        }
-      }
-
-      if ($this->selectedMediaType === 'video') {
-        // Si está creando un nuevo post o no tiene video existente
-        if (!$this->postId || !$this->existingVideo) {
-          if (empty($this->video)) {
-            $this->addError('video', 'Por favor selecciona un archivo de video.');
-            return false;
-          }
-        }
-      }
-    }
-    return true;
   }
 
   public function save()
   {
 
     $this->validate();
-
-    if (!$this->validateMediaRequirements()) {
-      return;
-    }
 
     if ($this->postId) {
 
@@ -275,11 +245,9 @@ class AddEditPost extends Component
       $post->tags()->sync($this->selectedTags);
     }
 
-    if ($this->selectedMediaType === 'image' && $this->images) {
+    if ($this->selectedMediaType === 'image') {
       $this->handleImages($post);
-    }
-
-    if ($this->selectedMediaType === 'video' && $this->video) {
+    } elseif ($this->selectedMediaType === 'video') {
       $this->handleVideo($post);
     }
 
@@ -290,26 +258,28 @@ class AddEditPost extends Component
 
   protected function handleImages($post)
   {
-    // Delete existing video if any
+
+    if (empty($this->images)) {
+      return;
+    }
+
     if ($this->existingVideo) {
-      Storage::disk('public')->delete(str_replace('/storage/', '', $this->existingVideo->url));
-      Media::where('id', $this->existingVideo->id)->delete();
+      $this->deleteMedia($this->existingVideo);
       $this->existingVideo = null;
-      $this->videoPreview = null;
     }
 
-    // Delete existing images if any
-    if ($this->existingImages) {
+    if (!empty($this->existingImages)) {
       foreach ($this->existingImages as $existingImage) {
-        Storage::disk('public')->delete(str_replace('/storage/', '', $existingImage['url']));
-        Media::where('id', $existingImage['id'])->delete();
+        $mediaModel = Media::find($existingImage['id']);
+        if ($mediaModel) {
+          $this->deleteMedia($mediaModel);
+        }
       }
+      $this->existingImages = [];
     }
 
-    // Save new images
-    if ($this->images) {
-      //dd($this->images);
-      foreach ($this->images as $image) {
+    foreach ($this->images as $image) {
+      try {
         $uuid = Uuid::uuid4()->toString();
         $extension = $image->getClientOriginalExtension();
         $fileName = $uuid . '.' . $extension;
@@ -319,32 +289,36 @@ class AddEditPost extends Component
           'url' => '/storage/' . $path,
           'file_type' => $image->getMimeType(),
         ]);
+      } catch (\Exception $e) {
+        \Log::error('Error al subir imagen: ' . $e->getMessage());
+        session()->flash('error', 'Error al subir una o más imágenes.');
       }
     }
   }
 
   protected function handleVideo($post)
   {
-    // Delete existing images if any
-    if ($this->existingImages) {
+
+    if (empty($this->video)) {
+      return;
+    }
+
+    if (!empty($this->existingImages)) {
       foreach ($this->existingImages as $existingImage) {
-        Storage::disk('public')->delete(str_replace('/storage/', '', $existingImage['url']));
-        Media::where('id', $existingImage['id'])->delete();
+        $mediaModel = Media::find($existingImage['id']);
+        if ($mediaModel) {
+          $this->deleteMedia($mediaModel);
+        }
       }
       $this->existingImages = [];
-      $this->imagePreviews = [];
     }
 
-    // Delete existing video if any
     if ($this->existingVideo) {
-      Storage::disk('public')->delete(str_replace('/storage/', '', $this->existingVideo->url));
-      Media::where('id', $this->existingVideo->id)->delete();
+      $this->deleteMedia($this->existingVideo);
       $this->existingVideo = null;
-      $this->videoPreview = null;
     }
 
-    // Save new video
-    if ($this->video) {
+    try {
       $uuid = Uuid::uuid4()->toString();
       $extension = $this->video->getClientOriginalExtension();
       $fileName = $uuid . '.' . $extension;
@@ -354,6 +328,22 @@ class AddEditPost extends Component
         'url' => '/storage/' . $path,
         'file_type' => $this->video->getMimeType(),
       ]);
+    } catch (\Exception $e) {
+      \Log::error('Error al subir video: ' . $e->getMessage());
+      session()->flash('error', 'Error al subir el video.');
+    }
+  }
+
+  protected function deleteMedia($media)
+  {
+    try {
+      $path = str_replace('/storage/', '', $media->url);
+      if (Storage::disk('public')->exists($path)) {
+        Storage::disk('public')->delete($path);
+      }
+      Media::where('id', $media->id)->delete();
+    } catch (\Exception $e) {
+      \Log::error('Error al eliminar archivo: ' . $e->getMessage());
     }
   }
 

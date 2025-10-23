@@ -33,9 +33,9 @@ new #[Layout('layouts.guest')] class extends Component
 <section class="bg-gray-50 dark:bg-gray-900 min-h-screen">
   <div class="flex flex-col items-center justify-center px-4 py-8 mx-auto min-h-screen">
     <!-- Logo -->
-    <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+    {{-- <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
       <img class="w-20 h-16 sm:w-25 sm:h-20 mr-2" src="{{ asset('images/logo.png') }}" alt="logo">
-    </a>
+    </a> --}}
     
     <!-- Login Card -->
     <div class="w-full max-w-md bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
