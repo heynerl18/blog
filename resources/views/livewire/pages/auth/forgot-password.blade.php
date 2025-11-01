@@ -16,7 +16,7 @@ new #[Layout('layouts.guest')] class extends Component
     $this->validate([
       'email' => ['required', 'string', 'email'],
     ], [
-      'email.required' => 'El campo de correo electrónico es obligatorio.',
+      'email.required' => 'Este campo es requerido.',
       'email.string'   => 'El correo electrónico debe ser una cadena de texto.',
       'email.email'    => 'Debes proporcionar una dirección de correo electrónico válida.',
     ]);
@@ -44,38 +44,95 @@ new #[Layout('layouts.guest')] class extends Component
   }
 }; ?>
 
-<div class="flex flex-col items-center justify-center px-6 pt-8 mx-auto md:h-screen pt:mt-0 dark:bg-gray-900">
-  {{-- <a href="{{ url('/') }}" class="flex items-center justify-center mb-8 text-2xl font-semibold lg:mb-10 dark:text-white">
-    <img src="{{ asset('images/logo.png') }}" class="mr-4 h-20" alt="logo">
-  </a> --}}
-  <!-- Card -->
-  <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800">
-    <div class="w-full p-6 sm:p-8">
-      <h2 class="mb-3 text-2xl font-bold text-gray-900 dark:text-white">
-        ¿Olvidaste su contraseña?
-      </h2>
-      <p class="text-base font-normal text-gray-500 dark:text-gray-400 text-justify">
-        Proporciona tu correo y te enviaremos un enlace para restablecer tu contraseña.
-      </p>
-      <!-- Session Status -->
-      @if (session('status'))
-        <div class="mb-4 text-sm font-medium text-green-600 dark:text-green-400">
-          {{ session('status') }}
+<section class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+  <div class="flex flex-col items-center justify-center px-4 py-8 mx-auto min-h-screen">
+    
+    <!-- Forgot Password Card with Overlapping Logo -->
+    <div class="w-full max-w-md relative">
+      <!-- Logo positioned above the card -->
+      <div class="flex justify-center mb-[-40px] relative z-10">
+        <div class="bg-white dark:bg-gray-700 rounded-full p-2 shadow-lg border-4 border-primary-600 dark:border-primary-500">
+          <img class="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-contain" src="{{ asset('images/logo.png') }}" alt="logo">
         </div>
-      @endif
+      </div>
+      <!-- Card form -->
+      <div class="bg-white rounded-lg shadow-xl dark:border dark:bg-gray-800 dark:border-gray-700 pt-12">
+        <div class="p-4 sm:p-8 space-y-4 sm:space-y-6">
+          <div class="-mt-2">
+            <h2 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white text-center mb-3">
+              ¿Olvidaste tu contraseña?
+            </h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 text-center">
+              Proporciona tu correo y te enviaremos un enlace para restablecer tu contraseña.
+            </p>
+          </div>
+          
+          <!-- Session Status -->
+          @if (session('status'))
+            <div class="p-4 text-sm font-medium text-green-600 bg-green-50 rounded-lg dark:bg-green-900/20 dark:text-green-400">
+              {{ session('status') }}
+            </div>
+          @endif
 
-      <form wire:submit="sendPasswordResetLink" class="mt-8 space-y-6">
-        <!-- Email Address -->
-        <div>
-          <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Correo electrónico</label>
-          <input wire:model="email" type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="nombre@gmail.com" autofocus>
-          @error('email')
-            <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
-          @enderror
+          <form wire:submit.prevent="sendPasswordResetLink" class="space-y-6">
+            <!-- Email Address -->
+            <div>
+              <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                Correo electrónico
+              </label>
+              <input 
+                wire:model="email" 
+                type="email" 
+                name="email" 
+                id="email" 
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed" 
+                placeholder="nombre@gmail.com" 
+                autofocus
+                autocomplete="email"
+                wire:loading.attr="disabled"
+              >
+              @error('email')
+                <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+              @enderror
+            </div>
+
+            <!-- Submit Button -->
+            <button 
+              type="submit" 
+              class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-3 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transition-colors disabled:opacity-70 disabled:cursor-not-allowed relative"
+              wire:loading.attr="disabled"
+            >
+              <!-- Texto normal -->
+              <span wire:loading.remove wire:target="sendPasswordResetLink">
+                Enviar enlace de restablecimiento
+              </span>
+              
+              <!-- Spinner y texto de carga -->
+              <span wire:loading wire:target="sendPasswordResetLink" class="flex items-center justify-center">
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Enviando...
+              </span>
+            </button>
+
+            <!-- Back to Login Link -->
+            <div class="text-sm text-center text-gray-500 dark:text-gray-400">
+              <a 
+                href="{{ route('login') }}" 
+                class="font-medium text-primary-600 hover:underline dark:text-primary-500 inline-flex items-center gap-1" 
+                wire:navigate
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Volver al inicio de sesión
+              </a>
+            </div>
+          </form>
         </div>
-
-        <button type="submit" class="w-full px-5 py-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Restablecer contraseña</button>
-      </form>
+      </div>
     </div>
   </div>
-</div>
+</section>
